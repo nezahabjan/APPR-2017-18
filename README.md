@@ -4,9 +4,21 @@ Repozitorij z gradivi pri predmetu APPR v študijskem letu 2017/18
 
 ## Tematika
 
-Izbrali si boste temo, s katero se bo vaš projekt ukvarjal. Tukaj boste
-napisali, kje ste dobili podatke, ter kakšen je vaš cilj.
+Preučila bom vpliv višine mesečne plače državljana nekaterih izbranih evropskih držav, na njihovo udejstvovanje v športu. S tem bom povezala zdravstveno stanje povprečnega državljana (daljše in resnejše bolezni ter življenjsko dobo). Moj cilj pri analizi podatkov je ugotoviti kako status oziroma finančna preskrbljenost posameznika vpliva na lastno skrb za zdravje, v smislu športnih aktivnosti in koliko se to dejanjsko pozna v celotni populaciji.
 
+viri tabel:
+- http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=hlth_silc_11&lang=en
+- http://www.who.int/gho/ncd/risk_factors/physical_activity/en/
+- http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_mlexpecedu&lang=en
+- http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=earn_gr_isco&lang=en
+
+spremenljivke:
+- leta (2010 - 2015)
+- države (10 držav)
+- delež premalo aktivnega prebivalstva
+- življenjska doba
+- letna plača
+- delež prebivalstva z daljšimi, resnejšimi boleznimi
 ## Program
 
 Glavni program in poročilo se nahajata v datoteki `projekt.Rmd`. Ko ga prevedemo,
