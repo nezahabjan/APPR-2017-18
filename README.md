@@ -2,11 +2,13 @@
 
 Repozitorij z gradivi pri predmetu APPR v študijskem letu 2017/18
 
-Analiza vpliva razpoložljivega dohodka na športno udejstvovanje in življenjsko dobo ljudi
+# Analiza vpliva razpoložljivega dohodka na športno udejstvovanje in življenjsko dobo ljudi
 
-Preučila bom vpliv višine mesečne plače državljana nekaterih izbranih evropskih držav, na njihovo udejstvovanje v športu. S tem bom povezala zdravstveno stanje povprečnega državljana (daljše in resnejše bolezni ter življenjsko dobo). Moj cilj pri analizi podatkov je ugotoviti kako status oziroma finančna preskrbljenost posameznika vpliva na lastno skrb za zdravje, v smislu športnih aktivnosti in koliko se to dejanjsko pozna v celotni populaciji.
+Preučila bom vpliv višine mesečnega dohodka (realno ledano po kupni moči) državljana nekaterih izbranih evropskih držav, na njihovo udejstvovanje v športu in delež izdatkov za športne aktivnosti. S tem bom povezala zdravstveno stanje povprečnega državljana (daljše in resnejše bolezni ter življenjsko dobo). Moj cilj pri analizi podatkov je ugotoviti kako status oziroma finančna preskrbljenost posameznika vpliva na lastno skrb za zdravje, v smislu športnih aktivnosti in koliko se to dejanjsko pozna v celotni populaciji.
 
 viri tabel:
+- http://appsso.eurostat.ec.europa.eu/nui/submitViewTableAction.do
+- http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=sprt_pcs_hbs&lang=en
 - http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=hlth_silc_11&lang=en
 - http://www.who.int/gho/ncd/risk_factors/physical_activity/en/
 - http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_mlexpecedu&lang=en
