@@ -2,9 +2,9 @@
 
 sl <- locale("sl", decimal_mark = ",", grouping_mark = ".")
 
-# Funkcija, ki uvozi občine iz Wikipedije
-uvozi.obcine <- function() {
-  link <- "http://sl.wikipedia.org/wiki/Seznam_ob%C4%8Din_v_Sloveniji"
+# Funkcija, ki uvozi tabelo pričakovane starosti iz Wikipedije
+uvozi.starost <- function() {
+  link <- "https://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy#List_by_the_United_Nations,_for_2010%E2%80%932015"
   stran <- html_session(link) %>% read_html()
   tabela <- stran %>% html_nodes(xpath="//table[@class='wikitable sortable']") %>%
     .[[1]] %>% html_table(dec = ",")
@@ -13,22 +13,28 @@ uvozi.obcine <- function() {
       Encoding(tabela[[i]]) <- "UTF-8"
     }
   }
-  colnames(tabela) <- c("obcina", "povrsina", "prebivalci", "gostota", "naselja",
-                        "ustanovitev", "pokrajina", "regija", "odcepitev")
-  tabela$obcina <- gsub("Slovenskih", "Slov.", tabela$obcina)
-  tabela$obcina[tabela$obcina == "Kanal ob Soči"] <- "Kanal"
-  tabela$obcina[tabela$obcina == "Loški potok"] <- "Loški Potok"
-  for (col in c("povrsina", "prebivalci", "gostota", "naselja", "ustanovitev")) {
-    tabela[[col]] <- parse_number(tabela[[col]], na = "-", locale = sl)
-  }
-  for (col in c("obcina", "pokrajina", "regija")) {
-    tabela[[col]] <- factor(tabela[[col]])
-  }
-  return(tabela)
+  colnames(tabela) <- c("mesto", "država", "skupaj", "moški", "ženske")
+  
 }
 
+  return(tabela)
+
+preciscene_bolezni <- function(){
+  stolpci <- c("leto","država", "kvantil", "starost", "spol", "mera", "vrednost", "zastava")
+  bolezni <- read.csv("hlth_silc_11_1_Data.csv", locale=locale(encoding="cp1250"),
+                      col_names = stolpci, skip=1, na=c(":", ""," ", "-"))
+bolezni$zastava<- NULL
+bolezni$kvantil<- NULL
+bolezni$mera<- NULL
+bolezni$starost<- NULL
+bolezni <- bolezni[c(2,1,3,4)]
+}
+
+bolezni <- preciscene_bolezni()
+
+
 # Funkcija, ki uvozi podatke iz datoteke druzine.csv
-uvozi.druzine <- function(obcine) {
+uvozi.bolezni <- function(obcine) {
   data <- read_csv2("podatki/druzine.csv", col_names = c("obcina", 1:4),
                     locale = locale(encoding = "Windows-1250"))
   data$obcina <- data$obcina %>% strapplyc("^([^/]*)") %>% unlist() %>%

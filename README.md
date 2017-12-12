@@ -8,16 +8,16 @@ Preučila bom vpliv višine mesečnega dohodka (realno ledano po kupni moči) dr
 
 viri tabel:
 - http://ec.europa.eu/eurostat/tgm/refreshTableAction.do?tab=table&plugin=1&pcode=sdg_10_10&language=en
-- http://appsso.eurostat.ec.europa.eu/nui/submitViewTableAction.do
+- http://ec.europa.eu/eurostat/tgm/refreshTableAction.do?tab=table&plugin=1&pcode=tsdpc520&language=en
 - http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=sprt_pcs_hbs&lang=en
 - http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=hlth_silc_11&lang=en
 - http://www.who.int/gho/ncd/risk_factors/physical_activity/en/
 - http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_mlexpecedu&lang=en
-- http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=earn_gr_isco&lang=en
+- https://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy#List_by_the_United_Nations,_for_2010%E2%80%932015
 
 spremenljivke:
-- leta (2010 - 2015)
-- države (10 držav)
+- leta
+- države (13 držav)
 - delež premalo aktivnega prebivalstva
 - življenjska doba
 - kupna moč povprečnega državljana
