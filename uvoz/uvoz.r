@@ -1,5 +1,28 @@
 # 2. faza: Uvoz podatkov
 
+uvoz <- read.csv2("nama_10_co3_p3_1_Data.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 sl <- locale("sl", decimal_mark = ",", grouping_mark = ".")
 
 # Funkcija, ki uvozi tabelo pričakovane starosti iz Wikipedije
