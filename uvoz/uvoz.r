@@ -66,7 +66,20 @@ ociscena<-subset(podatki, mera=="Price level indices (EU28=100)"
 
 View(ociscena)
 
-
+library(readr)
+library(dplyr)
+library(tidyr)
+stolpci<-c("država", "leto", "starost", "delež")
+aktivnost <- read_csv("podatki/aktivnost.csv",
+                      skip=1,
+                      locale=locale(encoding="cp1250",
+                                    decimal_mark = ".",
+                                    grouping_mark = ","),
+                      col_names=stolpci)
+podatki<-aktivnost %>% fill(1:4) %>% drop_na(leto)
+              
+                      
+View(podatki)
 
 
 
