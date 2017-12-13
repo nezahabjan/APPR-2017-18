@@ -24,6 +24,21 @@ podatki %>% group_by(leto)
 ociscena<-subset(podatki, starost=="From 16 to 19 years" | starost=="Total" | starost=="From 16 to 44 years")
 View(ociscena)
 
+library(readr)
+library(dplyr)
+library(tidyr)
+stolpci<-c("leto", "država", "enota", "področje", "delež", "prazno")
+delezpotrosnje <- read_csv("podatki/delezpotrosnje.csv",
+                           locale=locale(encoding="cp1250"),
+                           col_names=stolpci,
+                           skip=1,
+                           n_max=1260,
+                           na=c(":", "", " "))
+podatki<-delezpotrosnje %>% fill(1:6) %>% drop_na(leto)
+podatki$prazno<-NULL
+podatki$leto<-parse_integer(podatki$leto)
+ociscena <-subset(podatki, enota=="Percentage of total" | enota=="Current prices, million euro")
+View(ociscena)
 
 
 
