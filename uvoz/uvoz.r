@@ -1,6 +1,30 @@
 # 2. faza: Uvoz podatkov
 
-uvoz <- read.csv2("nama_10_co3_p3_1_Data.csv")
+library(readr)
+library(dplyr)
+library(tidyr)
+stolpci <- c("leto", "država", "kvantil", "starost", "spol", "enota", "vrednost", "prazno")
+bolezni <- read_csv("podatki/bolezni.csv", 
+                    locale=locale(encoding="cp1250"), 
+                    col_names=stolpci,
+                    skip=1,
+                    n_max=651,
+                    na=c(":","", " "))
+
+
+podatki <- bolezni %>% fill(1:5) %>% drop_na(leto)
+podatki$kvantil<- NULL
+podatki$enota<- NULL
+podatki$prazno<- NULL
+podatki$spol<-NULL
+podatki$leto<-parse_integer(podatki$leto)
+podatki %>% select(leto) %>% distinct()
+podatki %>% group_by(leto)
+
+ociscena<-subset(podatki, starost=="From 16 to 19 years" | starost=="Total" | starost=="From 16 to 44 years")
+View(ociscena)
+
+
 
 
 
