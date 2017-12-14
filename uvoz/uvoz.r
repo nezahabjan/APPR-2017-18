@@ -1,6 +1,99 @@
 # 2. faza: Uvoz podatkov
-
 sl <- locale("sl", decimal_mark = ",", grouping_mark = ".")
+
+
+#funkcija, ki uvozi in prečisti tabelo bolezni
+library(readr)
+library(dplyr)
+library(tidyr)
+stolpci <- c("leto", "država", "kvantil", "starost", "spol", "enota", "vrednost", "prazno")
+bolezni <- read_csv("podatki/bolezni.csv", 
+                    locale=locale(encoding="cp1250"), 
+                    col_names=stolpci,
+                    skip=1,
+                    n_max=651,
+                    na=c(":","", " "))
+
+
+podatki <- bolezni %>% fill(1:5) %>% drop_na(leto)
+podatki$kvantil<- NULL
+podatki$enota<- NULL
+podatki$prazno<- NULL
+podatki$spol<-NULL
+podatki$leto<-parse_integer(podatki$leto)
+podatki %>% select(leto) %>% distinct()
+podatki %>% group_by(leto)
+
+ociscena<-subset(podatki, starost=="From 16 to 19 years" | starost=="Total" | starost=="From 16 to 44 years")
+View(ociscena)
+
+
+#funkcija, ki uvozi in prečisti tabelo deleža potrošnje
+library(readr)
+library(dplyr)
+library(tidyr)
+stolpci<-c("leto", "država", "enota", "področje", "delež", "prazno")
+delezpotrosnje <- read_csv("podatki/delezpotrosnje.csv",
+                           locale=locale(encoding="cp1250"),
+                           col_names=stolpci,
+                           skip=1,
+                           n_max=1260,
+                           na=c(":", "", " "))
+podatki<-delezpotrosnje %>% fill(1:6) %>% drop_na(leto)
+podatki$prazno<-NULL
+podatki$leto<-parse_integer(podatki$leto)
+ociscena <-subset(podatki, enota=="Percentage of total" | enota=="Current prices, million euro")
+View(ociscena)
+
+
+#funkcija, ki uvozi in prečisti tabelo kupne moči
+library(readr)
+library(dplyr)
+library(tidyr)
+stolpci<-c("leto", "država", "mera", "potrošnja", "vrednost", "prazno")
+kupnamoc <- read_csv("podatki/kupnamoc.csv",
+                     locale=locale(encoding="cp1250"),
+                     col_names=stolpci,
+                     skip=1,
+                     n_max=13300,
+                     na=c(":", "", " "))
+podatki<-kupnamoc %>% fill(1:6) %>% drop_na(leto)
+podatki$prazno<-NULL
+podatki$potrošnja<-NULL #VSI NAJ ZAJAMEJO LE OSEBNO INDIVIDUALNO POTROŠNJO
+podatki$leto<-parse_integer(podatki$leto)
+ociscena<-subset(podatki, mera=="Price level indices (EU28=100)"
+                 | mera=="Nominal expenditure as a percentage of GDP (GDP=100)")
+
+View(ociscena)
+
+library(readr)
+library(dplyr)
+library(tidyr)
+stolpci<-c("država", "leto", "starost", "delež")
+aktivnost <- read_csv("podatki/aktivnost.csv",
+                      skip=1,
+                      locale=locale(encoding="cp1250",
+                                    decimal_mark = ".",
+                                    grouping_mark = ","),
+                      col_names=stolpci)
+podatki<-aktivnost %>% fill(1:4) %>% drop_na(leto)
+              
+                      
+View(podatki)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Funkcija, ki uvozi tabelo pričakovane starosti iz Wikipedije
 uvozi.starost <- function() {
@@ -19,6 +112,7 @@ uvozi.starost <- function() {
 
   return(tabela)
 
+<<<<<<< HEAD
 aktivnost <- function(){
   stolpci <- c("država","leto", "starost", "spol")
   aktivnosti <- read.csv("podatki/aktivnost.csv", locale=locale(encoding="cp1250"),
@@ -28,6 +122,8 @@ aktivnost <- function(){
 aktivnosti <- aktivnost()
 
 
+=======
+>>>>>>> 2eb8ab02e01e8b3362439704840149bfdfaadaad
 # Funkcija, ki uvozi podatke iz datoteke druzine.csv
 uvozi.bolezni <- function(obcine) {
   data <- read_csv2("podatki/druzine.csv", col_names = c("obcina", 1:4),
