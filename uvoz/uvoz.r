@@ -66,9 +66,12 @@ ociscena<-subset(podatki, mera=="Price level indices (EU28=100)"
 
 View(ociscena)
 
+
+#funkcija, ki uvozi in prečisti tabelo aktivnosti ljudi po državah
 library(readr)
 library(dplyr)
 library(tidyr)
+sl <- locale("sl", decimal_mark = ".", grouping_mark = ",")
 stolpci<-c("država", "leto", "starost", "delež")
 aktivnost <- read_csv("podatki/aktivnost.csv",
                       skip=1,
@@ -76,14 +79,17 @@ aktivnost <- read_csv("podatki/aktivnost.csv",
                                     decimal_mark = ".",
                                     grouping_mark = ","),
                       col_names=stolpci)
-podatki<-aktivnost %>% fill(1:4) %>% drop_na(leto)
+as.data.frame(aktivnost, row.names=NULL)
+
               
                       
-View(podatki)
+View(aktivnost)
 
 
+aktivnost <- read_csv("podatki/aktivnost.csv", sep=",")
 
-
+aktivnost<-read.csv("podatki/aktivnost.csv", header = TRUE, sep = ",", quote = "\"",
+         dec = ".", fill = TRUE, comment.char = "")
 
 
 
@@ -112,18 +118,7 @@ uvozi.starost <- function() {
 
   return(tabela)
 
-<<<<<<< HEAD
-aktivnost <- function(){
-  stolpci <- c("država","leto", "starost", "spol")
-  aktivnosti <- read.csv("podatki/aktivnost.csv", locale=locale(encoding="cp1250"),
-                      col_names = stolpci, skip=1, na=c(":", ""," ", "-"))
-}
 
-aktivnosti <- aktivnost()
-
-
-=======
->>>>>>> 2eb8ab02e01e8b3362439704840149bfdfaadaad
 # Funkcija, ki uvozi podatke iz datoteke druzine.csv
 uvozi.bolezni <- function(obcine) {
   data <- read_csv2("podatki/druzine.csv", col_names = c("obcina", 1:4),
