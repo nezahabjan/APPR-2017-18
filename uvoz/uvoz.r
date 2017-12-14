@@ -19,18 +19,13 @@ uvozi.starost <- function() {
 
   return(tabela)
 
-preciscene_bolezni <- function(){
-  stolpci <- c("leto","država", "kvantil", "starost", "spol", "mera", "vrednost", "zastava")
-  bolezni <- read.csv("hlth_silc_11_1_Data.csv", locale=locale(encoding="cp1250"),
+aktivnost <- function(){
+  stolpci <- c("država","leto", "starost", "spol")
+  aktivnosti <- read.csv("podatki/aktivnost.csv", locale=locale(encoding="cp1250"),
                       col_names = stolpci, skip=1, na=c(":", ""," ", "-"))
-bolezni$zastava<- NULL
-bolezni$kvantil<- NULL
-bolezni$mera<- NULL
-bolezni$starost<- NULL
-bolezni <- bolezni[c(2,1,3,4)]
 }
 
-bolezni <- preciscene_bolezni()
+aktivnosti <- aktivnost()
 
 
 # Funkcija, ki uvozi podatke iz datoteke druzine.csv
