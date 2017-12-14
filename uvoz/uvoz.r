@@ -103,15 +103,12 @@ aktivnost<-read.csv("podatki/aktivnost.csv", header = TRUE, sep = ",", quote = "
 
 # Funkcija, ki uvozi tabelo pričakovane starosti iz Wikipedije
 uvozi.starost <- function() {
-  link <- "https://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy#List_by_the_United_Nations,_for_2010%E2%80%932015"
+  #link <- "https://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy#List_by_the_United_Nations,_for_2010%E2%80%932015"
+  link <- "http://apps.who.int/gho/athena/data/GHO/NCD_PAC,NCD_PAA?profile=xtab&format=html&x-topaxis=GHO;SEX&x-sideaxis=COUNTRY;YEAR;AGEGROUP&x-title=table&filter=AGEGROUP:YEARS18-PLUS;COUNTRY:*;SEX:*;"
   stran <- html_session(link) %>% read_html()
-  tabela <- stran %>% html_nodes(xpath="//table[@class='wikitable sortable']") %>%
-    .[[1]] %>% html_table(dec = ",")
-  for (i in 1:ncol(tabela)) {
-    if (is.character(tabela[[i]])) {
-      Encoding(tabela[[i]]) <- "UTF-8"
-    }
-  }
+  json <- stran %>% html_nodes(xpath="//script") %>% .[[3]] %>% html_text() %>%
+    strapplyc("(\\{.*\\})") %>% unlist() %>% fromJSON()
+  tabela <- json$Crosstable$Matrix %>% sapply(. %>% sapply(. %>% .[[1]] %>% .$disp)) %>% t() %>% data.frame()
   colnames(tabela) <- c("mesto", "država", "skupaj", "moški", "ženske")
   
 }
