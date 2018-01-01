@@ -168,8 +168,8 @@ data$Vrednost <- gsub("Lower", "Spodnja meja", data$Vrednost)
 uvozi.starost <- function() {
   link <- "https://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy#List_by_the_United_Nations,_for_2010%E2%80%932015"
   stran <- html_session(link) %>% read_html()
-  tabela <- stran %>% html_nodes(xpath="//div[@id='my-content-text']") %>%
-    .[[1]] %>% html_table(dec = ",")
+  tabela <- stran %>% html_nodes(xpath="//div[@class'mw-parser-output']/table[2]") %>%
+   html_table()
   for (i in 1:ncol(tabela)) {
     if (is.character(tabela[[i]])) {
       Encoding(tabela[[i]]) <- "UTF-8"
@@ -180,6 +180,8 @@ uvozi.starost <- function() {
 }
 
   return(tabela)
+  
+
 
 # Funkcija, ki uvozi podatke iz datoteke druzine.csv
 uvozi.bolezni <- function(obcine) {
