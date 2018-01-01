@@ -95,6 +95,7 @@ library(tidyr)
 library(rvest)
 library(gsubfn)
 library(reshape)
+library(reshape2)
 
 link <- "http://apps.who.int/gho/athena/data/GHO/NCD_PAC,NCD_PAA?profile=xtab&format=html&x-topaxis=GHO;SEX&x-sideaxis=COUNTRY;YEAR;AGEGROUP&x-title=table&filter=AGEGROUP:YEARS18-PLUS;COUNTRY:*;SEX:*;"
 json <- html_session(link) %>% read_html() %>% html_nodes(xpath="//script[not(@src)]") %>%
@@ -106,11 +107,9 @@ stolpci <- json$Vertical$layer %>% unlist() %>% { json$dimension[.+1] } %>% sapp
 colnames(matrika) <- glava(json$Horizontal) %>% sapply(paste, collapse = ",")
 data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %>%
   bind_rows() %>% cbind(matrika) %>% melt(id.vars = 1:3) %>%
-  rename(Age.Group = `Age Group`) %>%
   mutate(Country = factor(Country), Year = parse_number(Year),
-         Age.Group = factor(Age.Group),
          value = parse_character(value, na = "No data"),
-         variable = parse_character(variable)) %>% drop_na(value) %>%
+         variable = parse_character(variable)) %>% drop_na(value)%>%
   mutate(Indicator = variable %>% strapplyc("^([^,]+)") %>% unlist() %>% factor(),
          Sex = variable %>% strapplyc("([^,]+)$") %>% unlist() %>% factor(),
          Value = value %>% strapplyc("^([0-9.]+)") %>% unlist(),
@@ -118,8 +117,7 @@ data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %
          Upper = value %>% strapplyc("([0-9.]+)\\]") %>% unlist()) %>%
   select(-variable, -value) %>% melt(measure.vars = c("Value", "Lower", "Upper"),
                                      variable.name = "Statistic",
-                                     value.name = "Value") %>%
-  mutate(Value = parse_number(Value))
+                                     value.name = "Value")
 
 data<-filter(data, Country=="Belgium"|
              Country=="Bosnia and Herzegovina"|
@@ -136,14 +134,17 @@ data<-filter(data, Country=="Belgium"|
 
 data = data[data$Indicator=="Insufficiently active (crude estimate)",]
 data$Indicator <- NULL
-data = data %>% arrange(Country, Sex) %>% rename(Leto=Year, 
-                                            Drzava=Country, 
-                                            Mera=Statistic, 
-                                            Spol=Sex, 
-                                            Odstotek=Value)
+data$Year <- NULL
+data$`Age Group` <- NULL
 
-
-
+data = data %>% arrange(Country, Sex) 
+data = rename(data, c(Country="Drzava", Sex="Spol", variable="Vrednost", value="Stevilo"))
+data$Spol <- gsub("Both sexes", "Oba spola", data$Spol)
+data$Spol <- gsub("Female", "Zenske", data$Spol)
+data$Spol <- gsub("Male", "Moski", data$Spol)
+data$Vrednost <- gsub("Value", "Povprecje", data$Vrednost)
+data$Vrednost <- gsub("Upper", "Zgornja meja", data$Vrednost)
+data$Vrednost <- gsub("Lower", "Spodnja meja", data$Vrednost)
 
 
 
