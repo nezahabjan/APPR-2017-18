@@ -2,9 +2,7 @@
 sl <- locale("sl", decimal_mark = ",", grouping_mark = ".")
 
 #Funkcija, ki uvozi in precisti tabelo potrosnje za sportne aktivnosti
-library(readr)
-library(tidyr)
-library(dplyr)
+
 stolpci <- c("podrocje", "drzava" , "mera", "leto", "potrosnja", "prazno")
 potrosnjakupnamoc <- read_csv("podatki/potrosnjakupnamoc.csv", 
                               locale=locale(encodin="cp1250"),
@@ -23,9 +21,7 @@ ociscenapotrosnjakupnamoc <- podatki %>% arrange(drzava)
 
 
 #funkcija, ki uvozi in prečisti tabelo bolezni
-library(readr)
-library(dplyr)
-library(tidyr)
+
 stolpci <- c("leto", "država", "kvantil", "starost", "spol", "enota", "vrednost", "prazno")
 bolezni <- read_csv("podatki/bolezni.csv", 
                     locale=locale(encoding="cp1250"), 
@@ -49,9 +45,7 @@ ociscenebolezni<-subset(podatki, starost=="From 16 to 19 years" | starost=="Tota
 
 
 #funkcija, ki uvozi in prečisti tabelo deleža potrošnje
-library(readr)
-library(dplyr)
-library(tidyr)
+
 stolpci<-c("leto", "država", "enota", "področje", "delež", "prazno")
 delezpotrosnje <- read_csv("podatki/delezpotrosnje.csv",
                            locale=locale(encoding="cp1250"),
@@ -67,9 +61,7 @@ ociscenadelezpotrosnje <-subset(podatki, enota=="Percentage of total" | enota=="
 
 
 #funkcija, ki uvozi in prečisti tabelo kupne moči
-library(readr)
-library(dplyr)
-library(tidyr)
+
 stolpci<-c("leto", "država", "mera", "potrošnja", "vrednost", "prazno")
 kupnamoc <- read_csv("podatki/kupnamoc.csv",
                      locale=locale(encoding="cp1250"),
@@ -88,14 +80,7 @@ ociscenakupnamoc<-subset(podatki, mera=="Price level indices (EU28=100)"
 
 
 #Funkcija, ki uvozi in precisti tabelo aktivnosti posameznikov (aktivnost.csv)
-library(dplyr)
-library(readr)
-library(rjson)
-library(tidyr)
-library(rvest)
-library(gsubfn)
-library(reshape)
-library(reshape2)
+
 
 link <- "http://apps.who.int/gho/athena/data/GHO/NCD_PAC,NCD_PAA?profile=xtab&format=html&x-topaxis=GHO;SEX&x-sideaxis=COUNTRY;YEAR;AGEGROUP&x-title=table&filter=AGEGROUP:YEARS18-PLUS;COUNTRY:*;SEX:*;"
 json <- html_session(link) %>% read_html() %>% html_nodes(xpath="//script[not(@src)]") %>%
