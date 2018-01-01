@@ -67,29 +67,65 @@ ociscena<-subset(podatki, mera=="Price level indices (EU28=100)"
 View(ociscena)
 
 
-#funkcija, ki uvozi in prečisti tabelo aktivnosti ljudi po državah
-library(readr)
+#Funkcija, ki uvozi in precisti tabelo aktivnosti posameznikov
 library(dplyr)
+library(readr)
+library(rjson)
 library(tidyr)
-sl <- locale("sl", decimal_mark = ".", grouping_mark = ",")
-stolpci<-c("država", "leto", "starost", "delež")
-aktivnost <- read_csv("podatki/aktivnost.csv",
-                      skip=1,
-                      locale=locale(encoding="cp1250",
-                                    decimal_mark = ".",
-                                    grouping_mark = ","),
-                      col_names=stolpci)
-as.data.frame(aktivnost, row.names=NULL)
 
-              
-                      
-View(aktivnost)
+link <- "http://apps.who.int/gho/athena/data/GHO/NCD_PAC,NCD_PAA?profile=xtab&format=html&x-topaxis=GHO;SEX&x-sideaxis=COUNTRY;YEAR;AGEGROUP&x-title=table&filter=AGEGROUP:YEARS18-PLUS;COUNTRY:*;SEX:*;"
+json <- html_session(link) %>% read_html() %>% html_nodes(xpath="//script[not(@src)]") %>%
+  .[[1]] %>% html_text() %>% strapplyc("(\\{.*\\})") %>% unlist() %>% fromJSON() %>% .$Crosstable
+matrika <- json$Matrix %>% sapply(. %>% sapply(. %>% .[[1]] %>% .$disp)) %>% t()
+glava <- . %>% .$header %>% lapply(. %>% .[-1] %>% unlist() %>% { json$code[.+1] } %>%
+                                     sapply(. %>% .$disp))
+stolpci <- json$Vertical$layer %>% unlist() %>% { json$dimension[.+1] } %>% sapply(. %>% .$disp)
+colnames(matrika) <- glava(json$Horizontal) %>% sapply(paste, collapse = ",")
+data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %>%
+  bind_rows() %>% cbind(matrika) %>% melt(id.vars = 1:3) %>%
+  rename(Age.Group = `Age Group`) %>%
+  mutate(Country = factor(Country), Year = parse_number(Year),
+         Age.Group = factor(Age.Group),
+         value = parse_character(value, na = "No data"),
+         variable = parse_character(variable)) %>% drop_na(value) %>%
+  mutate(Indicator = variable %>% strapplyc("^([^,]+)") %>% unlist() %>% factor(),
+         Sex = variable %>% strapplyc("([^,]+)$") %>% unlist() %>% factor(),
+         Value = value %>% strapplyc("^([0-9.]+)") %>% unlist(),
+         Lower = value %>% strapplyc("\\[([0-9.]+)") %>% unlist(),
+         Upper = value %>% strapplyc("([0-9.]+)\\]") %>% unlist()) %>%
+  select(-variable, -value) %>% melt(measure.vars = c("Value", "Lower", "Upper"),
+                                     variable.name = "Statistic",
+                                     value.name = "Value") %>%
+  mutate(Value = parse_number(Value))
+
+data<-filter(data, Country=="Belgium"|
+             Country=="Bosnia and Herzegovina"|
+             Country=="Denmark"|
+             Country=="Finland"|
+             Country=="Germany"|
+             Country=="Greece"|
+             Country=="Italy"|
+             Country=="Latvia"|
+             Country=="Slovenia"|
+             Country=="France"|
+             Country=="Luxembourg"|
+             Country=="Bulgaria")
+
+data = data[data$Indicator=="Insufficiently active (crude estimate)",]
+data = data[c(2,1,3,4,5,6,7)]
+data$Indicator <- NULL
+data$Age.Group <- NULL
+data = data %>% arrange(Country, Sex) %>% rename(Leto=Year, 
+                                            Drzava=Country, 
+                                            Mera=Statistic, 
+                                            Spol=Sex, 
+                                            Odstotek=Value)
+ View(data)
 
 
-aktivnost <- read_csv("podatki/aktivnost.csv", sep=",")
 
-aktivnost<-read.csv("podatki/aktivnost.csv", header = TRUE, sep = ",", quote = "\"",
-         dec = ".", fill = TRUE, comment.char = "")
+
+
 
 
 
@@ -117,7 +153,6 @@ uvozi.starost <- function() {
 }
 
   return(tabela)
-
 
 # Funkcija, ki uvozi podatke iz datoteke druzine.csv
 uvozi.bolezni <- function(obcine) {
