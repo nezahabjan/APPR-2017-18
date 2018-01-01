@@ -17,9 +17,9 @@ podatki$mera <- NULL
 podatki$leto <- NULL
 podatki$prazno <- NULL
 podatki = podatki[,c(2,1,3)]
-podatki = podatki %>% arrange(drzava)
+ociscenapotrosnjakupnamoc <- podatki %>% arrange(drzava)
 
-View(podatki)
+View(ociscenapotrosnjakupnamoc)
 
 
 #funkcija, ki uvozi in prečisti tabelo bolezni
@@ -44,8 +44,8 @@ podatki$leto<-parse_integer(podatki$leto)
 podatki %>% select(leto) %>% distinct()
 podatki %>% group_by(leto)
 
-ociscena<-subset(podatki, starost=="From 16 to 19 years" | starost=="Total" | starost=="From 16 to 44 years")
-View(ociscena)
+ociscenebolezni<-subset(podatki, starost=="From 16 to 19 years" | starost=="Total" | starost=="From 16 to 44 years")
+View(ociscenebolezni)
 
 
 #funkcija, ki uvozi in prečisti tabelo deleža potrošnje
@@ -62,8 +62,8 @@ delezpotrosnje <- read_csv("podatki/delezpotrosnje.csv",
 podatki<-delezpotrosnje %>% fill(1:6) %>% drop_na(leto)
 podatki$prazno<-NULL
 podatki$leto<-parse_integer(podatki$leto)
-ociscena <-subset(podatki, enota=="Percentage of total" | enota=="Current prices, million euro")
-View(ociscena)
+ociscenadelezpotrosnje <-subset(podatki, enota=="Percentage of total" | enota=="Current prices, million euro")
+View(ociscenadelezpotrosnje)
 
 
 #funkcija, ki uvozi in prečisti tabelo kupne moči
@@ -81,10 +81,10 @@ podatki<-kupnamoc %>% fill(1:6) %>% drop_na(leto)
 podatki$prazno<-NULL
 podatki$potrošnja<-NULL #VSI NAJ ZAJAMEJO LE OSEBNO INDIVIDUALNO POTROŠNJO
 podatki$leto<-parse_integer(podatki$leto)
-ociscena<-subset(podatki, mera=="Price level indices (EU28=100)"
+ociscenakupnamoc<-subset(podatki, mera=="Price level indices (EU28=100)"
                  | mera=="Nominal expenditure as a percentage of GDP (GDP=100)")
 
-View(ociscena)
+View(ociscenakupnamoc)
 
 
 #Funkcija, ki uvozi in precisti tabelo aktivnosti posameznikov (aktivnost.csv)
@@ -140,6 +140,7 @@ data = data %>% arrange(Country, Sex) %>% rename(Leto=Year,
                                             Mera=Statistic, 
                                             Spol=Sex, 
                                             Odstotek=Value)
+
  View(data)
 
 
