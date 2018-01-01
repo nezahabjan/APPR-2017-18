@@ -19,7 +19,7 @@ podatki$prazno <- NULL
 podatki = podatki[,c(2,1,3)]
 ociscenapotrosnjakupnamoc <- podatki %>% arrange(drzava)
 
-View(ociscenapotrosnjakupnamoc)
+
 
 
 #funkcija, ki uvozi in prečisti tabelo bolezni
@@ -45,7 +45,7 @@ podatki %>% select(leto) %>% distinct()
 podatki %>% group_by(leto)
 
 ociscenebolezni<-subset(podatki, starost=="From 16 to 19 years" | starost=="Total" | starost=="From 16 to 44 years")
-View(ociscenebolezni)
+
 
 
 #funkcija, ki uvozi in prečisti tabelo deleža potrošnje
@@ -63,7 +63,7 @@ podatki<-delezpotrosnje %>% fill(1:6) %>% drop_na(leto)
 podatki$prazno<-NULL
 podatki$leto<-parse_integer(podatki$leto)
 ociscenadelezpotrosnje <-subset(podatki, enota=="Percentage of total" | enota=="Current prices, million euro")
-View(ociscenadelezpotrosnje)
+
 
 
 #funkcija, ki uvozi in prečisti tabelo kupne moči
@@ -84,7 +84,7 @@ podatki$leto<-parse_integer(podatki$leto)
 ociscenakupnamoc<-subset(podatki, mera=="Price level indices (EU28=100)"
                  | mera=="Nominal expenditure as a percentage of GDP (GDP=100)")
 
-View(ociscenakupnamoc)
+
 
 
 #Funkcija, ki uvozi in precisti tabelo aktivnosti posameznikov (aktivnost.csv)
@@ -92,6 +92,9 @@ library(dplyr)
 library(readr)
 library(rjson)
 library(tidyr)
+library(rvest)
+library(gsubfn)
+library(reshape)
 
 link <- "http://apps.who.int/gho/athena/data/GHO/NCD_PAC,NCD_PAA?profile=xtab&format=html&x-topaxis=GHO;SEX&x-sideaxis=COUNTRY;YEAR;AGEGROUP&x-title=table&filter=AGEGROUP:YEARS18-PLUS;COUNTRY:*;SEX:*;"
 json <- html_session(link) %>% read_html() %>% html_nodes(xpath="//script[not(@src)]") %>%
@@ -132,16 +135,14 @@ data<-filter(data, Country=="Belgium"|
              Country=="Bulgaria")
 
 data = data[data$Indicator=="Insufficiently active (crude estimate)",]
-data = data[c(2,1,3,4,5,6,7)]
 data$Indicator <- NULL
-data$Age.Group <- NULL
 data = data %>% arrange(Country, Sex) %>% rename(Leto=Year, 
                                             Drzava=Country, 
                                             Mera=Statistic, 
                                             Spol=Sex, 
                                             Odstotek=Value)
 
- View(data)
+
 
 
 
