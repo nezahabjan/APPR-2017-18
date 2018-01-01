@@ -184,6 +184,7 @@ uvozi.starost <- function() {
 
 
 # Funkcija, ki uvozi podatke iz datoteke druzine.csv
+library(rvest)
 uvozi.bolezni <- function(obcine) {
   data <- read_csv2("podatki/druzine.csv", col_names = c("obcina", 1:4),
                     locale = locale(encoding = "Windows-1250"))
@@ -199,7 +200,6 @@ uvozi.bolezni <- function(obcine) {
 
 # Zapišimo podatke v razpredelnico obcine
 obcine <- uvozi.obcine()
-
 # Zapišimo podatke v razpredelnico druzine.
 druzine <- uvozi.druzine(levels(obcine$obcina))
 
