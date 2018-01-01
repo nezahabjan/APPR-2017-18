@@ -63,18 +63,37 @@ ociscenadelezpotrosnje <-subset(podatki, enota=="Percentage of total" | enota=="
 #funkcija, ki uvozi in prečisti tabelo kupne moči
 
 stolpci<-c("leto", "država", "mera", "potrošnja", "vrednost", "prazno")
-kupnamoc <- read_csv("podatki/kupnamoc.csv",
-                     locale=locale(encoding="cp1250"),
+kupnamoc <- read_csv("podatki/kupnamoc.csv", 
+                     locale = locale(encoding="cp1250"),
                      col_names=stolpci,
                      skip=1,
                      n_max=13300,
                      na=c(":", "", " "))
 podatki<-kupnamoc %>% fill(1:6) %>% drop_na(leto)
 podatki$prazno<-NULL
-podatki$potrošnja<-NULL #VSI NAJ ZAJAMEJO LE OSEBNO INDIVIDUALNO POTROŠNJO
 podatki$leto<-parse_integer(podatki$leto)
-ociscenakupnamoc<-subset(podatki, mera=="Price level indices (EU28=100)"
-                 | mera=="Nominal expenditure as a percentage of GDP (GDP=100)")
+
+ociscenakupnamoc <- subset(podatki, potrošnja=="Actual individual consumption")
+naslednjakupnamoc <- subset(ociscenakupnamoc, mera=="Price level indices (EU28=100)"
+                         | mera=="Nominal expenditure as a percentage of GDP (GDP=100)")
+naslednjakupnamoc$potrošnja <- NULL
+koncnakupnamoc <- subset(naslednjakupnamoc, država=="European Union (28 countries)"|
+                         država=="Belgium"|
+                         država=="Bulgaria"|
+                         država=="Denmark"|
+                         država=="Germany (until 1990 former territory of the FRG)"|
+                         država=="Greece"|
+                         država=="France"|
+                         država=="Italy"|
+                         država=="Latvia"|
+                         država=="Luxembourg"|
+                         država=="Slovenia"|
+                         država=="Finland"|
+                         država=="Bosnia and Herzegovina"|
+                         država=="Switzerland")
+
+
+
 
 
 
@@ -149,7 +168,7 @@ data$Vrednost <- gsub("Lower", "Spodnja meja", data$Vrednost)
 uvozi.starost <- function() {
   link <- "https://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy#List_by_the_United_Nations,_for_2010%E2%80%932015"
   stran <- html_session(link) %>% read_html()
-  tabela <- stran %>% html_nodes(xpath="//table[@class='wikitable sortable']") %>%
+  tabela <- stran %>% html_nodes(xpath="//div[@id='my-content-text']") %>%
     .[[1]] %>% html_table(dec = ",")
   for (i in 1:ncol(tabela)) {
     if (is.character(tabela[[i]])) {
