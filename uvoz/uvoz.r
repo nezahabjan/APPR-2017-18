@@ -1,6 +1,26 @@
 # 2. faza: Uvoz podatkov
 sl <- locale("sl", decimal_mark = ",", grouping_mark = ".")
 
+#Funkcija, ki uvozi in precisti tabelo potrosnje za sportne aktivnosti
+library(readr)
+library(tidyr)
+library(dplyr)
+stolpci <- c("podrocje", "drzava" , "mera", "leto", "potrosnja", "prazno")
+potrosnjakupnamoc <- read_csv("podatki/potrosnjakupnamoc.csv", 
+                              locale=locale(encodin="cp1250"),
+                              col_names=stolpci,
+                              skip=1,
+                              n_max=77,
+                              na=c(":", "", " "))
+podatki <- potrosnjakupnamoc %>% fill(1:6) %>% drop_na(leto)
+podatki$mera <- NULL
+podatki$leto <- NULL
+podatki$prazno <- NULL
+podatki = podatki[,c(2,1,3)]
+podatki = podatki %>% arrange(drzava)
+
+View(podatki)
+
 
 #funkcija, ki uvozi in prečisti tabelo bolezni
 library(readr)
@@ -67,7 +87,7 @@ ociscena<-subset(podatki, mera=="Price level indices (EU28=100)"
 View(ociscena)
 
 
-#Funkcija, ki uvozi in precisti tabelo aktivnosti posameznikov
+#Funkcija, ki uvozi in precisti tabelo aktivnosti posameznikov (aktivnost.csv)
 library(dplyr)
 library(readr)
 library(rjson)
