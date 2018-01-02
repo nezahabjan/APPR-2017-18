@@ -184,20 +184,24 @@ tabela <- tabela[, c(1, 3)]
   
 
 
-# Funkcija, ki uvozi podatke iz datoteke druzine.csv
-library(rvest)
-uvozi.bolezni <- function(obcine) {
-  data <- read_csv2("podatki/druzine.csv", col_names = c("obcina", 1:4),
-                    locale = locale(encoding = "Windows-1250"))
-  data$obcina <- data$obcina %>% strapplyc("^([^/]*)") %>% unlist() %>%
-    strapplyc("([^ ]+)") %>% sapply(paste, collapse = " ") %>% unlist()
-  data$obcina[data$obcina == "Sveti Jurij"] <- "Sveti Jurij ob Ščavnici"
-  data <- data %>% melt(id.vars = "obcina", variable.name = "velikost.druzine",
-                        value.name = "stevilo.druzin")
-  data$velikost.druzine <- parse_number(data$velikost.druzine)
-  data$obcina <- factor(data$obcina, levels = obcine)
-  return(data)
-}
+#Funkcija, ki združi tabelo bolezni in deleža potrošnje
+nova1 <- inner_join(ociscenebolezni, ociscenadelezpotrosnje, 
+                    by=("država"), 
+                    copy=FALSE)
+novejsa1 <- nova1[nova1$leto.x==nova1$leto.y, ]
+
+novejsa1 = novejsa1[c(2,1,3,4,5,7,6,8)]
+novejsa1$leto.y <- NULL
+novejsa1 = novejsa1 %>% arrange(država, leto.x, starost, vrednost, področje, enota)
+
+#Funkcija, ki združi kupno moč in aktivnost državljanov v letu 2010
+nova2 <- inner_join(ociscenapotrosnjakupnamoc, data, by=c("drzava"="Drzava"))
+novejsa2 = nova2 %>% arrange(drzava, Spol, Vrednost, Stevilo, podrocje)
+novejsa2 = novejsa2[c(1,4,5,6,2,3)]
+
+
+
+
 
 # Zapišimo podatke v razpredelnico obcine
 obcine <- uvozi.obcine()

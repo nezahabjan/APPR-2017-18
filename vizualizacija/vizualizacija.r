@@ -11,3 +11,5 @@ zemljevid <- pretvori.zemljevid(zemljevid)
 # Izračunamo povprečno velikost družine
 povprecja <- druzine %>% group_by(obcina) %>%
   summarise(povprecje = sum(velikost.druzine * stevilo.druzin) / sum(stevilo.druzin))
+
+grafbolezni <- ggplot(data=ociscenebolezni, aes(x=država, y=starost, col=vrednost)) + geom_line()
