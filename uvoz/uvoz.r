@@ -164,18 +164,19 @@ data$Vrednost <- gsub("Lower", "Spodnja meja", data$Vrednost)
 
 
 
-# Funkcija, ki uvozi tabelo pričakovane starosti iz Wikipedije
-uvozi.starost <- function() {
-  link <- "https://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy#List_by_the_United_Nations,_for_2010%E2%80%932015"
+# Funkcija, ki uvozi tabelo umrljivosti iz Wikipedije
+uvozi.smrtnost <- function() {
+  link <- "https://en.wikipedia.org/wiki/List_of_sovereign_states_and_dependent_territories_by_mortality_rate"
   stran <- html_session(link) %>% read_html()
-  tabela <- stran %>% html_nodes(xpath="//div[@class'mw-parser-output']/table[2]") %>%
-   html_table()
+  tabela <- stran %>% html_nodes(xpath="//table[@class='sortable wikitable']") %>% 
+    .[[1]] %>% html_table(dec=",", fill=TRUE)
   for (i in 1:ncol(tabela)) {
     if (is.character(tabela[[i]])) {
       Encoding(tabela[[i]]) <- "UTF-8"
     }
   }
-  colnames(tabela) <- c("mesto", "država", "skupaj", "moški", "ženske")
+tabela <- tabela[, c(1, 3)]
+
   
 }
 
