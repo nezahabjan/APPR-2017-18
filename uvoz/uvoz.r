@@ -1,6 +1,9 @@
 # 2. faza: Uvoz podatkov
 sl <- locale("sl", decimal_mark = ",", grouping_mark = ".")
 
+
+
+
 #Funkcija, ki uvozi in precisti tabelo potrosnje za sportne aktivnosti
 
 stolpci <- c("podrocje", "drzava" , "mera", "leto", "potrosnja", "prazno")
@@ -41,6 +44,19 @@ podatki %>% select(leto) %>% distinct()
 podatki %>% group_by(leto)
 
 ociscenebolezni<-subset(podatki, starost=="From 16 to 19 years" | starost=="Total" | starost=="From 16 to 44 years")
+ociscenebolezni <- filter(ociscenebolezni, !is.na(vrednost)) %>% arrange(država, leto)
+ociscenebolezni <- ociscenebolezni[c(2,1,3,4)]
+
+totalociscenihbolezni <- ociscenebolezni[(ociscenebolezni$starost=="Total"), ] 
+totalociscenihbolezni$starost <- NULL
+
+mladiociscenebolezni <- ociscenebolezni[(ociscenebolezni$starost=="From 16 to 19 years"), ] 
+mladiociscenebolezni$starost <- NULL
+
+starejsiociscenebolezni <- ociscenebolezni[(ociscenebolezni$starost=="From 16 to 44 years"), ]
+starejsiociscenebolezni$starost <- NULL
+
+
 
 
 
@@ -56,7 +72,18 @@ delezpotrosnje <- read_csv("podatki/delezpotrosnje.csv",
 podatki<-delezpotrosnje %>% fill(1:6) %>% drop_na(leto)
 podatki$prazno<-NULL
 podatki$leto<-parse_integer(podatki$leto)
-ociscenadelezpotrosnje <-subset(podatki, enota=="Percentage of total" | enota=="Current prices, million euro")
+ociscenadelezpotrosnje <-subset(podatki, enota=="Percentage of total" & področje!="Other major durables for recreation and culture")
+ociscenadelezpotrosnje$enota <- NULL
+ociscenadelezpotrosnje = ociscenadelezpotrosnje %>% arrange(država, leto)
+ociscenadelezpotrosnje <- ociscenadelezpotrosnje[c(2,1,3,4)]
+
+zdravjeociscenadelezpotrosnje <- ociscenadelezpotrosnje[(ociscenadelezpotrosnje$področje=="Health"), ]
+zdravjeociscenadelezpotrosnje$področje <- NULL
+
+rekreacijaociscenadelezpotrosnje <- ociscenadelezpotrosnje[(ociscenadelezpotrosnje$področje=="Recreation and culture"), ]
+rekreacijaociscenadelezpotrosnje$področje <- NULL
+
+
 
 
 
@@ -196,15 +223,21 @@ tabela <- tabela[, c(1, 3)]
   
 
 
-#Funkcija, ki združi tabelo bolezni in deleža potrošnje
-nova1 <- inner_join(ociscenebolezni, ociscenadelezpotrosnje, 
+#Funkcija, ki združi tabelo bolezni in deleža potrošnje za zdravje
+nova1 <- inner_join(totalociscenihbolezni, zdravjeociscenadelezpotrosnje, 
                     by=("država"), 
                     copy=FALSE)
 novejsa1 <- nova1[nova1$leto.x==nova1$leto.y, ]
-
-novejsa1 = novejsa1[c(2,1,3,4,5,7,6,8)]
 novejsa1$leto.y <- NULL
-novejsa1 = novejsa1 %>% arrange(država, leto.x, starost, vrednost, področje, enota)
+
+
+#Funkcija, ki združi tabelo bolezni in deleža potrošnje za rekreacijo in kulturo
+nova2 <- inner_join(totalociscenihbolezni, rekreacijaociscenadelezpotrosnje, 
+                    by=("država"), 
+                    copy=FALSE)
+novejsa2 <- nova2[nova2$leto.x==nova2$leto.y, ]
+novejsa2$leto.y <- NULL
+
 
 #Funkcija, ki združi kupno moč in aktivnost državljanov v letu 2010
 nova2 <- inner_join(ociscenapotrosnjakupnamoc, data, by=c("drzava"="Drzava"))
