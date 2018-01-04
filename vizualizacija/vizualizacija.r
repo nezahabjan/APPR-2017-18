@@ -12,4 +12,7 @@ zemljevid <- pretvori.zemljevid(zemljevid)
 povprecja <- druzine %>% group_by(obcina) %>%
   summarise(povprecje = sum(velikost.druzine * stevilo.druzin) / sum(stevilo.druzin))
 
-grafbolezni <- ggplot(data=ociscenebolezni, aes(x=država, y=starost, col=vrednost)) + geom_line()
+grafnova3a <- ggplot(data=nova3, aes(x=drzava, y=Stevilo, col=Spol)) + geom_point()
+grafnova3b <- ggplot(data=nova3, aes(x=drzava, y=potrosnja)) + geom_point()
+grafnovejsa1 <- ggplot(data=novejsa1, aes(x=država, y=vrednost, col=leto.x)) + 
+  geom_point() 
