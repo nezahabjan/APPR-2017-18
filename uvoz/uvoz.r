@@ -20,6 +20,23 @@ podatki$prazno <- NULL
 podatki = podatki[,c(2,1,3)]
 ociscenapotrosnjakupnamoc <- podatki %>% arrange(drzava)
 
+totalociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$podrocje=="Total"), ] 
+totalociscenapotrosnjakupnamoc$podrocje <- NULL
+
+sportociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$podrocje=="Sports goods and services"), ] 
+sportociscenapotrosnjakupnamoc$podrocje <- NULL
+
+outdoorociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$podrocje=="Major durables for outdoor recreation"), ] 
+outdoorociscenapotrosnjakupnamoc$podrocje <- NULL
+
+indoorociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$podrocje=="Major durables for indoor recreation"), ] 
+indoorociscenapotrosnjakupnamoc$podrocje <- NULL
+
+opremaociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$podrocje=="Equipment for sport, camping and open-air recreation"), ] 
+opremaociscenapotrosnjakupnamoc$podrocje <- NULL
+
+
+
 
 
 
@@ -176,6 +193,8 @@ data$Spol <- gsub("Male", "Moski", data$Spol)
 data$Vrednost <- gsub("Value", "Povprecje", data$Vrednost)
 data$Vrednost <- gsub("Upper", "Zgornja meja", data$Vrednost)
 data$Vrednost <- gsub("Lower", "Spodnja meja", data$Vrednost)
+data <- subset(data, data$Vrednost=="Povprecje")
+data$Vrednost <- NULL
 
 
 
@@ -187,7 +206,6 @@ data$Vrednost <- gsub("Lower", "Spodnja meja", data$Vrednost)
 
 
 
-<<<<<<< HEAD
 # Funkcija, ki uvozi tabelo pričakovane starosti iz Wikipedije
 uvozi.starost <- function() {
   #link <- "https://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy#List_by_the_United_Nations,_for_2010%E2%80%932015"
@@ -197,31 +215,14 @@ uvozi.starost <- function() {
     strapplyc("(\\{.*\\})") %>% unlist() %>% fromJSON()
   tabela <- json$Crosstable$Matrix %>% sapply(. %>% sapply(. %>% .[[1]] %>% .$disp)) %>% t() %>% data.frame()
   colnames(tabela) <- c("mesto", "država", "skupaj", "moški", "ženske")
-=======
-
-
-
-
-# Funkcija, ki uvozi tabelo umrljivosti iz Wikipedije
-uvozi.smrtnost <- function() {
-  link <- "https://en.wikipedia.org/wiki/List_of_sovereign_states_and_dependent_territories_by_mortality_rate"
-  stran <- html_session(link) %>% read_html()
-  tabela <- stran %>% html_nodes(xpath="//table[@class='sortable wikitable']") %>% 
-    .[[1]] %>% html_table(dec=",", fill=TRUE)
-  for (i in 1:ncol(tabela)) {
-    if (is.character(tabela[[i]])) {
-      Encoding(tabela[[i]]) <- "UTF-8"
-    }
-  }
-tabela <- tabela[, c(1, 3)]
-
->>>>>>> 47b97175e6181178b705af3a13029a348985b899
   
 }
-
   return(tabela)
   
 
+  
+  
+  
 
 #Funkcija, ki združi tabelo bolezni in deleža potrošnje za zdravje
 nova1 <- inner_join(totalociscenihbolezni, zdravjeociscenadelezpotrosnje, 
@@ -240,9 +241,8 @@ novejsa2$leto.y <- NULL
 
 
 #Funkcija, ki združi kupno moč in aktivnost državljanov v letu 2010
-nova2 <- inner_join(ociscenapotrosnjakupnamoc, data, by=c("drzava"="Drzava"))
-novejsa2 = nova2 %>% arrange(drzava, Spol, Vrednost, Stevilo, podrocje)
-novejsa2 = novejsa2[c(1,4,5,6,2,3)]
+nova3 <- inner_join(totalociscenapotrosnjakupnamoc, data, by=c("drzava"="Drzava"))
+
 
 
 
