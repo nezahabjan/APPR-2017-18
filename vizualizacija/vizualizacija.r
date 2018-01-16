@@ -9,13 +9,12 @@ zemljevid$OB_UIME <- factor(zemljevid$OB_UIME, levels = levels(obcine$obcina))
 zemljevid <- pretvori.zemljevid(zemljevid)
 
 
-grafnova3a <- ggplot(data=nova3, aes(x=drzava, y=Stevilo, col=Spol)) + geom_point()
-grafnova3b <- ggplot(data=nova3, aes(x=drzava, y=potrosnja)) + geom_point()
-grafnovejsa1 <- ggplot(data=novejsa1, aes(x=država, y=vrednost, col=leto.x)) + 
-  geom_point() 
-grafnova4 <- ggplot(data=nova4, aes(x=Drzava, y=(0:100), col=Skupaj)) + geom_line() 
+grafnovejsa1 <- ggplot(data=novejsa1, aes(x=država, y=vrednost, color=leto.x, size=delež)) + 
+  geom_point() + scale_size(range=c(1,6))
+#graf vpliva aktivnosti na starost prebivalstva
+grafnova4 <- ggplot(data=nova4, aes(x=Drzava, y=Stevilo, size=Skupaj)) + geom_point()
+  
+#graf vpliva kupne moči na aktivnost državljanov
+grafnova3 <- ggplot(data=nova3, aes(x=drzava, y=Spol, color=potrosnja, size=Stevilo)) +
+  geom_point() + scale_size_manual(values=c(12:43,0.3))
 
-  geom_line(aes(y=Stevilo, color="Stevilo")) + 
-  geom_line(aes(y=Skupaj, color="Skupaj"))
-grafnova4 <- melt(nova4, id = "Drzava", measure = c("Stevilo", "Skupaj"))
-ggplot(grafnova4, aes(Drzava, value, colour = variable)) + geom_line()
