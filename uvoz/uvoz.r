@@ -172,9 +172,11 @@ koncnakupnamoc <- subset(naslednjakupnamoc, država=="European Union (28 countri
 link <- "http://apps.who.int/gho/athena/data/GHO/NCD_PAC,NCD_PAA?profile=xtab&format=html&x-topaxis=GHO;SEX&x-sideaxis=COUNTRY;YEAR;AGEGROUP&x-title=table&filter=AGEGROUP:YEARS18-PLUS;COUNTRY:*;SEX:*;"
 json <- html_session(link) %>% read_html() %>% html_nodes(xpath="//script[not(@src)]") %>%
   .[[1]] %>% html_text() %>% strapplyc("(\\{.*\\})") %>% unlist() %>% fromJSON() %>% .$Crosstable
-matrika <- json$Matrix %>% sapply(. %>% sapply(. %>% .$disp)) %>% t()
-glava <- . %>% .$header %>% lapply(. %>% .[-1, 2] %>% { json$code[.+1, ] } %>% .$disp)
-stolpci <- json$Vertical$layer %>% unlist() %>% { json$dimension[.+1, ] } %>% .$disp
+matrika <- json$Matrix %>% sapply(. %>% sapply(. %>% .[[1]] %>% .$disp)) %>% t()
+glava <- . %>% .$header %>% lapply(. %>% .[-1] %>% unlist() %>% { json$code[.+1] } %>%
+                                     sapply(. %>% .$disp))
+stolpci <- json$Vertical$layer %>% unlist() %>% { json$dimension[.+1] } %>% sapply(. %>% .$disp)
+
 colnames(matrika) <- glava(json$Horizontal) %>% sapply(paste, collapse = ",")
 data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %>%
   bind_rows() %>% cbind(matrika) %>% melt(id.vars = 1:3) %>%
@@ -203,12 +205,18 @@ data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %
                        "Luxembourg",
                        "Bulgaria")) %>% select(-Year, -`Age Group`, -Vrednost)
 
+data = data %>% arrange(Drzava, Spol)
 
 
 #link <- "http://apps.who.int/gho/athena/data/GHO/NCD_PAC,NCD_PAA?profile=xtab&format=html&x-topaxis=GHO;SEX&x-sideaxis=COUNTRY;YEAR;AGEGROUP&x-title=table&filter=AGEGROUP:YEARS18-PLUS;COUNTRY:*;SEX:*;"
-
 #json <- html_session(link) %>% read_html() %>% html_nodes(xpath="//script[not(@src)]") %>%3
 #.[[1]] %>% html_text() %>% strapplyc("(\\{.*\\})") %>% unlist() %>% fromJSON() %>% .$Crosstable
+
+#matrika <- json$Matrix %>% sapply(. %>% sapply(. %>% .[[1]] %>% .$disp)) %>% t()
+#glava <- . %>% .$header %>% lapply(. %>% .[-1] %>% unlist() %>% { json$code[.+1] } %>%
+#                                     sapply(. %>% .$disp))
+#stolpci <- json$Vertical$layer %>% unlist() %>% { json$dimension[.+1] } %>% sapply(. %>% .$disp)
+#
 #matrika <- json$Matrix %>% sapply(. %>% sapply(. %>% .[[1]] %>% .$disp)) %>% t()
 #glava <- . %>% .$header %>% lapply(. %>% .[-1] %>% unlist() %>% { json$code[.+1] } %>%
 #                                     sapply(. %>% .$disp))
@@ -218,7 +226,7 @@ data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %
 #  bind_rows() %>% cbind(matrika) %>% melt(id.vars = 1:3) %>%
 #  mutate(Country = factor(Country), Year = parse_number(Year),
 #         value = parse_character(value, na = "No data"),
-#         variable = parse_character(variable)) %>% drop_na(value)%>%
+#variable = parse_character(variable)) %>% drop_na(value)%>%
 #  mutate(Indicator = variable %>% strapplyc("^([^,]+)") %>% unlist() %>% factor(),
 #         Sex = variable %>% strapplyc("([^,]+)$") %>% unlist() %>% factor(),
 #         Value = value %>% strapplyc("^([0-9.]+)") %>% unlist(),
@@ -232,7 +240,7 @@ data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %
 
 #data<-filter(data, Country=="Belgium"|
 #             Country=="Bosnia and Herzegovina"|
-#             Country=="Denmark"|
+##             Country=="Denmark"|
 #             Country=="Finland"|
 #             Country=="Germany"|
 #             Country=="Greece"|
@@ -242,12 +250,10 @@ data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %
 #             Country=="France"|
 #             Country=="Luxembourg"|
 #             Country=="Bulgaria")
-
 #data = data[data$Indicator=="Insufficiently active (crude estimate)",]
 #data$Indicator <- NULL
 #data$Year <- NULL
 #data$`Age Group` <- NULL
-
 #data = data %>% arrange(Country, Sex) 
 #data = rename(data, c(Country="Drzava", Sex="Spol", variable="Vrednost", value="Stevilo"))
 #data$Spol <- gsub("Both sexes", "Oba spola", data$Spol)
@@ -262,8 +268,10 @@ data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %
 
 
 
-  
-  
+#Funkcija, ki združi v eno tabelo pričakovano starost in kupno moč posameznikov
+nova5 <- inner_join(totalociscenapotrosnjakupnamoc, tabelastarosti,
+                    by=("drzava"="Država"),
+                    copy=FALSE)
 
 #Funkcija, ki združi tabelo bolezni in deleža potrošnje za zdravje
 nova1 <- inner_join(totalociscenihbolezni, zdravjeociscenadelezpotrosnje, 
@@ -286,7 +294,7 @@ nova3 <- inner_join(totalociscenapotrosnjakupnamoc, data, by=c("drzava"="Drzava"
 
 #Funkcija, ki združi aktivnost državljanov in pričakovano starost (2010-2015) obeh spolov
 nova4 <- inner_join(data, tabelastarosti, by=c("Drzava"="Država"), copy=FALSE)
-nova4 <- subset(nova4, Spol=="Oba spola")
+nova4 <- subset(nova4, Spol=="Both sexes")
 nova4$Spol <- NULL
 nova4$Moški <- NULL
 nova4$Ženske <- NULL

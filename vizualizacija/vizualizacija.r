@@ -8,7 +8,7 @@ levels(zemljevid$OB_UIME) <- levels(zemljevid$OB_UIME) %>%
 zemljevid$OB_UIME <- factor(zemljevid$OB_UIME, levels = levels(obcine$obcina))
 zemljevid <- pretvori.zemljevid(zemljevid)
 
-
+#graf vpliva deleža potrošnje
 grafnovejsa1 <- ggplot(data=novejsa1, aes(x=država, y=vrednost, color=leto.x, size=delež)) + 
   geom_point() + scale_size(range=c(1,6))
 #graf vpliva aktivnosti na starost prebivalstva
