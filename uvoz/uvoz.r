@@ -140,6 +140,7 @@ rekreacijaociscenadelezpotrosnje$področje <- NULL
 
 
 #Funkcija, ki uvozi in precisti tabelo aktivnosti posameznikov (aktivnost.csv)
+
 link <- "http://apps.who.int/gho/athena/data/GHO/NCD_PAC,NCD_PAA?profile=xtab&format=html&x-topaxis=GHO;SEX&x-sideaxis=COUNTRY;YEAR;AGEGROUP&x-title=table&filter=AGEGROUP:YEARS18-PLUS;COUNTRY:*;SEX:*;"
 json <- html_session(link) %>% read_html() %>% html_nodes(xpath="//script[not(@src)]") %>%
   .[[1]] %>% html_text() %>% strapplyc("(\\{.*\\})") %>% unlist() %>% fromJSON() %>% .$Crosstable
