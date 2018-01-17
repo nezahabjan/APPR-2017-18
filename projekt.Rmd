@@ -11,12 +11,13 @@ output:
 ---
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE}
-# Če želimo nastaviti pisave v PDF-ju, odkomentiramo
-# in sledimo navodilom v programu.
+message = FALSE
+warning = FALSE
 #source("fontconfig.r", encoding = "UTF-8")
 
-# Uvoz vseh potrebnih knjižnic
-source("lib/libraries.r", encoding = "UTF-8")
+
+
+#source("lib/libraries.r", encoding = "UTF-8")
 ```
 
 # Izbira teme
@@ -24,11 +25,13 @@ source("lib/libraries.r", encoding = "UTF-8")
 Preučila bom vpliv višine mesečnega dohodka (realno gledano po kupni moči) državljana nekaterih izbranih evropskih držav, na njihovo udejstvovanje v športu in delež izdatkov za športne aktivnosti. S tem bom povezala zdravstveno stanje povprečnega državljana (daljše in resnejše bolezni ter življenjsko dobo). Moj cilj pri analizi podatkov je ugotoviti kako status oziroma finančna preskrbljenost posameznika vpliva na lastno skrb za zdravje, v smislu športnih aktivnosti in koliko se to dejanjsko pozna v celotni populaciji.
 
 
-***
+
 
 # Obdelava, uvoz in čiščenje podatkov
 
-```{r uvoz, echo=FALSE, message=FALSE}
+```
+r uvoz, echo=FALSE, message=FALSE
+
 source("uvoz/uvoz.r", encoding = "UTF-8")
 ```
 Podatki, s katerimi sem delala v tej fazi projekta, se nahajajo v petih tidydata tabelah:
@@ -76,9 +79,11 @@ ZDRUŽENI TABELI:
 
 # Analiza in vizualizacija podatkov
 
-***
 
-```{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE}
+
+```
+{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE}
+
 source("vizualizacija/vizualizacija.r", encoding = "UTF-8")
 ```
 
@@ -87,7 +92,10 @@ Spodnji prvi graf prikazuje vpliv deleža potrošnje za šport na število resne
 
 V naslednjem grafu sem želela predstaviti trende, kako športna aktivnost vpliva na življenjsko dobo ljudi. Iz grafa je razvidno, da višjo starost kot moški dočakajo ženske, kljub temu, da je pri prav vseh državah večji delež premalo aktivnih žensk kot pa moških.
 
-```{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
+```
+{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
+
+
 grafnova3 <- ggplot(data=nova3, aes(y=drzava, x=leto, col=potrosnja, size=vrednost)) + 
   geom_line() +
   ggtitle("Vpliv deleža potrošnje za šport na število bolezni")
@@ -104,7 +112,10 @@ Prvi prikazuje število premalo aktivnih državljanov izbranih držav po Evropi,
 
 Drugi zemljevid vsebuje podatke o življenjski dobi državljanov nekaterih Evropskih držav, kjer se vidi, da najvišjo starost dočakajo Italijani, najnižjo pa Bolgari in Latvijci.
 
-```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
+```
+{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
+
+
 ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid, 
                                          by=c("NAME_LONG"="Drzava")), 
                         aes(x=long, y=lat, group = group, fill = Stevilo)) + 
