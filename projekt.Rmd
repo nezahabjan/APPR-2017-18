@@ -10,7 +10,7 @@ output:
 
 ---
 
-```{r setup, echo=FALSE, results='hide', message=FALSE}
+```{r setup, echo=FALSE, warning=FALSE,results='hide', message=FALSE}
 # Če želimo nastaviti pisave v PDF-ju, odkomentiramo
 # in sledimo navodilom v programu.
 #source("fontconfig.r", encoding = "UTF-8")
@@ -28,7 +28,7 @@ Preučila bom vpliv višine mesečnega dohodka (realno gledano po kupni moči) d
 
 # Obdelava, uvoz in čiščenje podatkov
 
-```{r uvoz, echo=FALSE, message=FALSE}
+```{r uvoz, echo=FALSE,warning=FALSE, message=FALSE}
 
 source("uvoz/uvoz.r", encoding = "UTF-8")
 ```
@@ -89,14 +89,14 @@ Spodnji prvi graf prikazuje vpliv deleža potrošnje za šport na število resne
 
 V naslednjem grafu sem želela predstaviti trende, kako športna aktivnost vpliva na življenjsko dobo ljudi. Iz grafa je razvidno, da višjo starost kot moški dočakajo ženske, kljub temu, da je pri prav vseh državah večji delež premalo aktivnih žensk kot pa moških.
 
-```{r graf1, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Vpliv potrošnje za šport na število bolnih'}
+```{r graf1, echo=FALSE,warning=FALSE, message=FALSE, fig.align='center', fig.cap='Vpliv potrošnje za šport na število bolnih'}
 
 grafnova3 <- ggplot(data=nova3, aes(y=drzava, x=leto, col=potrosnja, size=vrednost)) + 
   geom_line() +
   ggtitle("Vpliv deleža potrošnje za šport na število bolezni")
 ```
 
-```{r graf2, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Vpliv športne aktivnosti na življenjsko dobo'}
+```{r graf2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Vpliv športne aktivnosti na življenjsko dobo'}
 
 grafnova4 <- ggplot(data=nova4, aes(x=Drzava, y=Spol, size=Stevilo, color=Starost)) + 
   geom_point() + 
@@ -110,7 +110,7 @@ Prvi prikazuje število premalo aktivnih državljanov izbranih držav po Evropi,
 
 Drugi zemljevid vsebuje podatke o življenjski dobi državljanov nekaterih Evropskih držav, kjer se vidi, da najvišjo starost dočakajo Italijani, najnižjo pa Bolgari in Latvijci.
 
-```{r zemljevid, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid aktivnosti državljanov'}
+```{r zemljevid1, echo=FALSE,warning=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid aktivnosti državljanov'}
 
 
 ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid, 
@@ -119,7 +119,7 @@ ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid,
   guides(legend) + ggtitle("Športna aktivnost državljanov")
 ```
 
-```{r zemljevid, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid življenjske dobe državljanov'}
+```{r zemljevid2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid življenjske dobe državljanov'}
 
 ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid, 
                                          by=c("NAME_LONG"="Drzava")), 
