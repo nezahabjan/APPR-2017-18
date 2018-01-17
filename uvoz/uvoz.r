@@ -10,24 +10,27 @@ link <- "https://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy"
 tabelastarosti <- html_session(link) %>% read_html() %>%
   html_nodes(xpath="//table[@class='wikitable sortable']") %>% .[[2]] %>% html_table()
 tabelastarosti$Rank <- NULL
-tabelastarosti <- rename(tabelastarosti,c("State/Territory"="Država", 
-                                          "Overall"="Skupaj",
-                                          "Male"="Moški",
-                                          "Female"="Ženske"))
+tabelastarosti <- rename(tabelastarosti,
+                         Drzava = `State/Territory`, `Both sexes` = Overall) %>%
+  melt(id.vars = "Drzava", variable.name = "Spol", value.name = "Starost")
+
 tabelastarosti <- subset(tabelastarosti,
-                           Država=="Belgium"|
-                           Država=="Bulgaria"|
-                           Država=="Denmark"|
-                           Država=="Germany"|
-                           Država=="Greece"|
-                           Država=="France"|
-                           Država=="Italy"|
-                           Država=="Latvia"|
-                           Država=="Luxembourg"|
-                           Država=="Slovenia"|
-                           Država=="Finland"|
-                           Država=="Bosnia and Herzegovina"|
-                           Država=="Switzerland")
+                           Drzava=="Belgium"|
+                           Drzava=="Bulgaria"|
+                           Drzava=="Denmark"|
+                           Drzava=="Germany"|
+                           Drzava=="Greece"|
+                           Drzava=="France"|
+                           Drzava=="Italy"|
+                           Drzava=="Latvia"|
+                           Drzava=="Luxembourg"|
+                           Drzava=="Slovenia"|
+                           Drzava=="Finland"|
+                           Drzava=="Bosnia and Herzegovina"|
+                           Drzava=="Switzerland")
+tabelastarosti <- tabelastarosti %>% arrange(Drzava)
+
+
 
 
 #Funkcija, ki uvozi in precisti tabelo potrosnje za sportne aktivnosti
@@ -105,7 +108,7 @@ starejsiociscenebolezni$starost <- NULL
 
 #funkcija, ki uvozi in prečisti tabelo deleža potrošnje
 
-stolpci<-c("leto", "država", "enota", "področje", "delež", "prazno")
+stolpci<-c("leto", "drzava", "enota", "področje", "delež", "prazno")
 delezpotrosnje <- read_csv("podatki/delezpotrosnje.csv",
                            locale=locale(encoding="cp1250"),
                            col_names=stolpci,
@@ -117,7 +120,7 @@ podatki$prazno<-NULL
 podatki$leto<-parse_integer(podatki$leto)
 ociscenadelezpotrosnje <-subset(podatki, enota=="Percentage of total" & področje!="Other major durables for recreation and culture")
 ociscenadelezpotrosnje$enota <- NULL
-ociscenadelezpotrosnje = ociscenadelezpotrosnje %>% arrange(država, leto)
+ociscenadelezpotrosnje = ociscenadelezpotrosnje %>% arrange(drzava, leto)
 ociscenadelezpotrosnje <- ociscenadelezpotrosnje[c(2,1,3,4)]
 
 zdravjeociscenadelezpotrosnje <- ociscenadelezpotrosnje[(ociscenadelezpotrosnje$področje=="Health"), ]
@@ -129,38 +132,6 @@ rekreacijaociscenadelezpotrosnje$področje <- NULL
 
 
 
-
-#funkcija, ki uvozi in prečisti tabelo kupne moči
-
-stolpci<-c("leto", "država", "mera", "potrošnja", "vrednost", "prazno")
-kupnamoc <- read_csv("podatki/kupnamoc.csv", 
-                     locale = locale(encoding="cp1250"),
-                     col_names=stolpci,
-                     skip=1,
-                     n_max=13300,
-                     na=c(":", "", " "))
-podatki<-kupnamoc %>% fill(1:6) %>% drop_na(leto)
-podatki$prazno<-NULL
-podatki$leto<-parse_integer(podatki$leto)
-
-ociscenakupnamoc <- subset(podatki, potrošnja=="Actual individual consumption")
-naslednjakupnamoc <- subset(ociscenakupnamoc, mera=="Price level indices (EU28=100)"
-                         | mera=="Nominal expenditure as a percentage of GDP (GDP=100)")
-naslednjakupnamoc$potrošnja <- NULL
-koncnakupnamoc <- subset(naslednjakupnamoc, država=="European Union (28 countries)"|
-                         država=="Belgium"|
-                         država=="Bulgaria"|
-                         država=="Denmark"|
-                         država=="Germany (until 1990 former territory of the FRG)"|
-                         država=="Greece"|
-                         država=="France"|
-                         država=="Italy"|
-                         država=="Latvia"|
-                         država=="Luxembourg"|
-                         država=="Slovenia"|
-                         država=="Finland"|
-                         država=="Bosnia and Herzegovina"|
-                         država=="Switzerland")
 
 
 
@@ -206,6 +177,7 @@ data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %
                        "Bulgaria")) %>% select(-Year, -`Age Group`, -Vrednost)
 
 data = data %>% arrange(Drzava, Spol)
+data <- data[c(TRUE,rep(FALSE,1)),]
 
 
 #link <- "http://apps.who.int/gho/athena/data/GHO/NCD_PAC,NCD_PAA?profile=xtab&format=html&x-topaxis=GHO;SEX&x-sideaxis=COUNTRY;YEAR;AGEGROUP&x-title=table&filter=AGEGROUP:YEARS18-PLUS;COUNTRY:*;SEX:*;"
@@ -268,38 +240,12 @@ data = data %>% arrange(Drzava, Spol)
 
 
 
-#Funkcija, ki združi v eno tabelo pričakovano starost in kupno moč posameznikov
-nova5 <- inner_join(totalociscenapotrosnjakupnamoc, tabelastarosti,
-                    by=("drzava"="Država"),
-                    copy=FALSE)
-
-#Funkcija, ki združi tabelo bolezni in deleža potrošnje za zdravje
-nova1 <- inner_join(totalociscenihbolezni, zdravjeociscenadelezpotrosnje, 
-                    by=("država"), 
-                    copy=FALSE)
-novejsa1 <- nova1[nova1$leto.x==nova1$leto.y, ]
-novejsa1$leto.y <- NULL
+#Funkcija, ki združi aktivnost državljanov in pričakovano starost (2010-2015) obeh spolov -> prikazan tudi graf
+nova4 <- inner_join(data, tabelastarosti)
 
 
-#Funkcija, ki združi tabelo bolezni in deleža potrošnje za rekreacijo in kulturo
-nova2 <- inner_join(totalociscenihbolezni, rekreacijaociscenadelezpotrosnje, 
-                    by=("država"), 
-                    copy=FALSE)
-novejsa2 <- nova2[nova2$leto.x==nova2$leto.y, ]
-novejsa2$leto.y <- NULL
-
-
-#Funkcija, ki združi kupno moč in aktivnost državljanov v letu 2010
-nova3 <- inner_join(totalociscenapotrosnjakupnamoc, data, by=c("drzava"="Drzava"))
-
-#Funkcija, ki združi aktivnost državljanov in pričakovano starost (2010-2015) obeh spolov
-nova4 <- inner_join(data, tabelastarosti, by=c("Drzava"="Država"), copy=FALSE)
-nova4 <- subset(nova4, Spol=="Both sexes")
-nova4$Spol <- NULL
-nova4$Moški <- NULL
-nova4$Ženske <- NULL
-
-
+#Funkcija, ki zdruzi delez potrosnje drzavljanov za rekreacijo in stevilo resno obolelih
+nova3 <- inner_join(sportociscenapotrosnjakupnamoc, rekreacijaociscenadelezpotrosnje)
 
 
 
