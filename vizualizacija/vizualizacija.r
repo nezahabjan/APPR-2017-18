@@ -3,15 +3,34 @@
 # Uvozimo zemljevid.
 zemljevid <- uvozi.zemljevid("http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip",
                              "ne_110m_admin_0_countries", encoding = "") %>% pretvori.zemljevid()
-zemljevid <- zemljevid %>% filter (CONTINENT %in% c("Europe")| NAME_LONG %in% c("Turkey", "Cyprus", "Northern Cyprus"),
-                                   NAME_LONG != "Russian Federation")
+zemljevid <- zemljevid %>% filter (CONTINENT %in% c("Europe")| 
+                                     NAME_LONG %in% c("Germany",
+                                                      "Slovenia",
+                                                      "Belgium",
+                                                      "Bulgaria",
+                                                      "Bosnia and Herzegovina",
+                                                      "Denmark",
+                                                      "Finland",
+                                                      "Greece",
+                                                      "Italy",
+                                                      "Latvia",
+                                                      "France",
+                                                      "Luxembourg"))
 
-#zemljevid <- uvozi.zemljevid("http://baza.fmf.uni-lj.si/OB.zip",
-#                            "OB/OB", encoding = "Windows-1250")
-#levels(zemljevid$OB_UIME) <- levels(zemljevid$OB_UIME) %>%
-#  { gsub("Slovenskih", "Slov.", .) } %>% { gsub("-", " - ", .) }
-#zemljevid$OB_UIME <- factor(zemljevid$OB_UIME, levels = levels(obcine$obcina))
-#zemljevid <- pretvori.zemljevid(zemljevid)
+
+
+#zemljevid, ki prikazuje stevilo premalo aktivnih državljanov izbranih držav po Evropi                                   
+ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid, 
+                                         by=c("NAME_LONG"="Drzava")), 
+                        aes(x=long, y=lat, group = group, fill = Stevilo)) + 
+  guides(legend)
+
+#Zemljevid, ki prikazuje povprečno življenjsko dobo državljanov v posameznih evropskih državah
+ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid, 
+                                         by=c("NAME_LONG"="Drzava")), 
+                        aes(x=long, y=lat, group = group, fill = Starost)) + 
+  guides(legend)
+
 
 
 
