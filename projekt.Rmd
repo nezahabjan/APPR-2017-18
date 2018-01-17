@@ -7,7 +7,7 @@ output:
     includes:
       in_header: lib/styles.sty
     latex_engine: xelatex
-runtime: shiny
+
 ---
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE}
@@ -21,7 +21,8 @@ source("lib/libraries.r", encoding = "UTF-8")
 
 # Izbira teme
 
-Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
+Preučila bom vpliv višine mesečnega dohodka (realno gledano po kupni moči) državljana nekaterih izbranih evropskih držav, na njihovo udejstvovanje v športu in delež izdatkov za športne aktivnosti. S tem bom povezala zdravstveno stanje povprečnega državljana (daljše in resnejše bolezni ter življenjsko dobo). Moj cilj pri analizi podatkov je ugotoviti kako status oziroma finančna preskrbljenost posameznika vpliva na lastno skrb za zdravje, v smislu športnih aktivnosti in koliko se to dejanjsko pozna v celotni populaciji.
+
 
 ***
 
@@ -30,74 +31,89 @@ Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
 ```{r uvoz, echo=FALSE, message=FALSE}
 source("uvoz/uvoz.r", encoding = "UTF-8")
 ```
+Podatki, s katerimi sem delala v tej fazi projekta, se nahajajo v petih tidydata tabelah:
 
-Uvozili smo podatke o občinah v obliki CSV s statističnega urada ter v obliki HTML
-z Wikipedije. Podatke imamo v dveh razpredelnicah v obliki *tidy data*.
+Spremenljivke:
+- leta
+- države
+- delež premalo aktivnega prebivalstva
+- življenjska doba
+- delež dohodka, ki ga posameznik nameni športnim aktivnostim
+- delež prebivalstva z daljšimi, resnejšimi boleznimi
 
-1. `druzine` - podatki o družinah za vsako občino
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `velikost.druzine` - spremenljivka: število otrok v družini (število: 1, 2, 3 ali 4, kjer zadnja vrednost pomeni 4 ali več),
-  - `stevilo.druzin` - meritev: število družin z ustreznim številom otrok v ustrezni občini (število).
+tabele po vrsti prikazujejo:
 
-2. `obcine` - podatki o občinah
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `povrsina` - meritev: površina občine v km$^2$ (število),
-  - `prebivalci` - meritev: prebivalstvo občine (število),
-  - `gostota` - meritev: število prebivalcev na km$^2$ (število),
-  - `naselja` - meritev: število naselij v občini (število),
-  - `ustanovitev` - meritev: leto ustanovitve občine (število),
-  - `pokrajina` - meritev: pokrajina, ki ji občina pripada (neurejen faktor),
-  - `regija` - meritev: regija, ki ji občina pripada (neurejen faktor),
-  - `odcepitev` - meritev: podatki o občinah, od katerih se je občina odcepila (besedilo).
+1. TABELA
+povprečno življenjsko dobo državljanov izbranih držav v letih od 2010 do 2015
+(država, spol, starost)
 
-**Opomba**: da bi razpredelnica `obcine` res bila v obliki *tidy data*, bi morali odstraniti stolpec `gostota` (saj je izpeljan iz stolpcev `povrsina` in `prebivalci`), podatke o pokrajinah pa bi morali premakniti v drugo razpredelnico, saj nekatere občine pripadajo dvema pokrajinama. Podobno bi morali narediti tudi s stolpcem `odcepitev`.
+2.TABELA
+delež potrošnje za športne aktivnosti, ločena na zunanje, notranje športne objekte, opremo za športne aktivnosti in športno udejstvovanje
+(država, potrošnja)
 
-Spodnji graf prikazuje porazdelitev števila naselij v občinah.
+3.TABELA
+delež prebivalstva z resnejšimi boleznimi, v letu 2010, po izbranih državah
+(država, leto, vrednost)
 
-```{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
-ggplot(obcine, aes(x = naselja)) + geom_histogram() +
-  ggtitle("Pogostost števila naselij") + xlab("Število naselij") + ylab("Število občin")
-```
+4.TABELA
+delež potrošnje državljanov za zdravje in rekreacijo
+(država, leto, delež)
 
-***
+5.TABELA
+delež premalo aktivnih državljanov po državah, za leto 2010
+(država, spol, število)
+
+
+ZDRUŽENI TABELI:
+
+-prikaz podatkov aktivnosti državljanov in pričakovane življenjske starosti
+(država, spol, število, starost)
+
+-povezava med deležem potrošnje za športne aktivnosti in številom resneje obolelih državljanov v posamezni državi
+(država, potrošnja, leto, vrednost)
+
+
 
 # Analiza in vizualizacija podatkov
+
+***
 
 ```{r vizualizacija, echo=FALSE, message=FALSE, warning=FALSE}
 source("vizualizacija/vizualizacija.r", encoding = "UTF-8")
 ```
 
-Spodnji zemljevid prikazuje povprečno velikost družine za vsako občino.
+
+Spodnji prvi graf prikazuje vpliv deleža potrošnje za šport na število resneje obolelih državljanov v posamezni državi. Zanimivo je, da ne moremo v celoti potegniti smernic ki bi opisovale trende, saj vidimo da ima npr. Finska največjo potrošnjo za športne aktivnosti med vsemi, a je hkrati tudi število obolelih med največjimi. Po drugi strani Bolgarija za šport nameni skoraj najmanj denarja, bolnih pa je prav tako zelo malo.
+
+V naslednjem grafu sem želela predstaviti trende, kako športna aktivnost vpliva na življenjsko dobo ljudi. Iz grafa je razvidno, da višjo starost kot moški dočakajo ženske, kljub temu, da je pri prav vseh državah večji delež premalo aktivnih žensk kot pa moških.
+
+```{r histogram, echo=FALSE, message=FALSE, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
+grafnova3 <- ggplot(data=nova3, aes(y=drzava, x=leto, col=potrosnja, size=vrednost)) + 
+  geom_line() +
+  ggtitle("Vpliv deleža potrošnje za šport na število bolezni")
+
+grafnova4 <- ggplot(data=nova4, aes(x=Drzava, y=Spol, size=Stevilo, color=Starost)) + 
+  geom_point() + 
+  ggtitle("Vpliv športne aktivnosti na življenjsko starost")
+
+```
+
+
+Sledita še dva zemljevida. 
+Prvi prikazuje število premalo aktivnih državljanov izbranih držav po Evropi, pri čemer vidimo, da je le teh najmanj v Grčiji, največ pa v Italiji in Belgiji.
+
+Drugi zemljevid vsebuje podatke o življenjski dobi državljanov nekaterih Evropskih držav, kjer se vidi, da najvišjo starost dočakajo Italijani, najnižjo pa Bolgari in Latvijci.
 
 ```{r zemljevid, echo=FALSE, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
-ggplot() + geom_polygon(data = left_join(zemljevid, povprecja, by = c("OB_UIME" = "obcina")),
-                        aes(x = long, y = lat, group = group, fill = povprecje)) +
-  ggtitle("Povprečno število otrok v družini") + xlab("") + ylab("") +
-  guides(fill = guide_colorbar(title = "Povprečje"))
+ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid, 
+                                         by=c("NAME_LONG"="Drzava")), 
+                        aes(x=long, y=lat, group = group, fill = Stevilo)) + 
+  guides(legend) + ggtitle("Športna aktivnost državljanov")
+
+ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid, 
+                                         by=c("NAME_LONG"="Drzava")), 
+                        aes(x=long, y=lat, group = group, fill = Starost)) + 
+  guides(legend) + ggtitle("Povprečna življenjska doba")
+
 ```
 
-***
-
-# Napredna analiza podatkov
-
-```{r analiza, echo=FALSE, message=FALSE}
-source("analiza/analiza.r", encoding = "UTF-8")
-```
-
-Spodnji graf prikazuje povezavo med številom naselij in površino občine.
-
-```{r graf, echo=FALSE, fig.align='center', fig.cap='Povezava med številom naselij in površino občine'}
-ggplot(inner_join(obcine, data.frame(obcina = names(skupine),
-                                     skupina = factor(skupine)), by = "obcina")
-, aes(x = povrsina, y = naselja, color = skupina, size = prebivalci/1000)) + geom_point() +
-  ggtitle("Število naselij glede na površino občine") +
-  xlab(expression("Površina (km"^2 * ")")) + ylab("Št. naselij") +
-  guides(color = guide_legend(title = "Skupina"),
-         size = guide_legend(title = "Prebivalci (* 1000)"))
-```
-
-***
-
-```{r shiny, echo = FALSE}
-shinyAppDir("shiny", options=list(width="100%", height=600))
-```

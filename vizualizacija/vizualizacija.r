@@ -22,7 +22,7 @@ grafnova4 <- ggplot(data=nova4, aes(x=Drzava, y=Spol, size=Stevilo, color=Staros
   ggtitle("Vpliv športne aktivnosti na življenjsko starost")
   
 #graf, ki povezuje stevilo obolelih z delezem potrosnje za rekreacijo
-grafnova3 <- ggplot(data=nova3, aes(y=drzava, x=leto, col=potrosnja, size=delež)) + 
+grafnova3 <- ggplot(data=nova3, aes(y=drzava, x=leto, col=potrosnja, size=vrednost)) + 
   geom_line() +
   ggtitle("Vpliv deleža potrošnje za šport na število bolezni")
 

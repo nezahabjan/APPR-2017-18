@@ -71,7 +71,7 @@ opremaociscenapotrosnjakupnamoc$podrocje <- NULL
 
 #funkcija, ki uvozi in prečisti tabelo bolezni
 
-stolpci <- c("leto", "država", "kvantil", "starost", "spol", "enota", "vrednost", "prazno")
+stolpci <- c("leto", "drzava", "kvantil", "starost", "spol", "enota", "vrednost", "prazno")
 bolezni <- read_csv("podatki/bolezni.csv", 
                     locale=locale(encoding="cp1250"), 
                     col_names=stolpci,
@@ -90,7 +90,7 @@ podatki %>% select(leto) %>% distinct()
 podatki %>% group_by(leto)
 
 ociscenebolezni<-subset(podatki, starost=="From 16 to 19 years" | starost=="Total" | starost=="From 16 to 44 years")
-ociscenebolezni <- filter(ociscenebolezni, !is.na(vrednost)) %>% arrange(država, leto)
+ociscenebolezni <- filter(ociscenebolezni, !is.na(vrednost)) %>% arrange(drzava, leto)
 ociscenebolezni <- ociscenebolezni[c(2,1,3,4)]
 
 totalociscenihbolezni <- ociscenebolezni[(ociscenebolezni$starost=="Total"), ] 
@@ -245,7 +245,7 @@ nova4 <- inner_join(data, tabelastarosti)
 
 
 #Funkcija, ki zdruzi delez potrosnje drzavljanov za rekreacijo in stevilo resno obolelih
-nova3 <- inner_join(sportociscenapotrosnjakupnamoc, rekreacijaociscenadelezpotrosnje)
+nova3 <- inner_join(sportociscenapotrosnjakupnamoc, totalociscenihbolezni)
 
 
 

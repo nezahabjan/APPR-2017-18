@@ -17,12 +17,22 @@ viri tabel:
 
 spremenljivke:
 - leta
-- države (13 držav)
+- države
 - delež premalo aktivnega prebivalstva
 - življenjska doba
-- kupna moč povprečnega državljana
 - delež dohodka, ki ga posameznik nameni športnim aktivnostim
 - delež prebivalstva z daljšimi, resnejšimi boleznimi
+
+tabele po vrsti prikazujejo:
+-povprečno življenjsko dobo državljanov izbranih držav v letih od 2010 do 2015
+-delež potrošnje za športne aktivnosti, ločena na zunanje, notranje športne objekte, opremo za športne aktivnosti in športno udejstvovanje
+-delež prebivalstva z resnejšimi boleznimi, v letu 2010, po izbranih državah
+-delež potrošnje državljanov za zdravje in rekreacijo
+-delež premalo aktivnih državljanov po državah, za leto 2010
+
+Prva združena tabela vsebuje prikaz podatkov aktivnosti državljanov in pričakovane življenjske starosti.
+Druga združena tabela predstavlja povezavo med deležem potrošnje za športne aktivnosti in številom resneje obolelih državljanov v posamezni državi.
+
 ## Program
 
 Glavni program in poročilo se nahajata v datoteki `projekt.Rmd`. Ko ga prevedemo,
