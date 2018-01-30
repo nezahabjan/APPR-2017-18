@@ -39,40 +39,36 @@ ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid,
 
 #graf vpliva aktivnosti na starost prebivalstva
 grafnova4 <- ggplot(data=nova4, aes(x=Drzava, y=Spol, size=Stevilo, color=Starost ) ) + 
-   
   geom_point() + 
   ggtitle("Vpliv športne aktivnosti na življenjsko starost") + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  guides(size=guide_legend("Premalo aktivnih"))
   
-#graf, ki povezuje stevilo obolelih z delezem potrosnje za rekreacijo
-grafnova3 <- ggplot(data=nova3, aes(y=drzava, x=leto, col=potrosnja, size=vrednost)) + 
-  geom_line() +
-  ggtitle("Vpliv deleža potrošnje za šport na število bolezni")  
+
   
-#moram:preimenovati imena, ki niso jasna
+#Graf potrošnje za posamezna športna področja po izbranih državah  
+graf1 <- ggplot(data=subset(ociscenapotrosnjakupnamoc, Podrocje != "Total"), 
+                aes(x=Drzava, y=Potrosnja, fill=Podrocje)) +
+   geom_bar(stat = "identity", position="stack") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  labs(title="Potrošnja za posamezna športna področja", y="Potrosnja", x="Drzava")
 
-graf1 <- ggplot(data=subset(ociscenapotrosnjakupnamoc, podrocje != "Total" & drzava %in% c("Finland",
-                                                                                           "Slovenia",
-                                                                                           "Greece",
-                                                                                           "Bulgaria",
-                                                                                           "Luxembourg",
-                                                                                           "Latvia",
-                                                                                           "Belgium")), 
-                aes(x=drzava, fill=potrosnja)) +
-   geom_dotplot(aes(x=drzava, fill=potrosnja)) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  facet_grid(.~ podrocje) + labs(title="Potrošnja za posamezna športna področja", x="Potrošnja", y="Država")
 
-graf2 <- ggplot(data=subset(totalociscenihbolezni, drzava %in% c("Finland", 
+#graf gibanja deleza bolnih po izbranih drzavah
+graf2 <- ggplot(data=subset(totalociscenihbolezni, Drzava %in% c("Finland", 
                                                                 "Slovenia",
                                                                 "Belgium",
                                                                 "Greece",
                                                                 "Bulgaria",
                                                                 "Luxembourg",
                                                                 "Latvia")),
-                            aes(x=leto, y=vrednost, color=drzava)) + geom_line(size=3)
+                            aes(x=Leto, y=Vrednost, color=Drzava)) + geom_line(size=3) + 
+  ggtitle("Delež bolnih po državah")
 
 
-
-
+#graf deleza potrosnje za zdravje in rekreacijo, po drzavah
+graf3 <- ggplot(data=ociscenadelezpotrosnje, aes(x=Leto, y=Delez, fill=Drzava)) + 
+  geom_bar(stat="identity", position="stack") + facet_grid(.~ Podrocje) +
+  labs(title="Deleža potrošnje za zdravje in rekreacijo")
 
 

@@ -29,40 +29,45 @@ tabelastarosti <- subset(tabelastarosti,
                            Drzava=="Bosnia and Herzegovina"|
                            Drzava=="Switzerland")
 tabelastarosti <- tabelastarosti %>% arrange(Drzava)
+tabelastarosti$Spol <- gsub("Both sexes", "Oba spola", tabelastarosti$Spol)
+tabelastarosti$Spol <- gsub("Male", "Moski", tabelastarosti$Spol)
+tabelastarosti$Spol <- gsub("Female", "Zenske", tabelastarosti$Spol)
+                                                            
 
-tabelastarostizemljevid <- tabelastarosti[(tabelastarosti$Spol=="Both sexes"), ]
+
+tabelastarostizemljevid <- tabelastarosti[(tabelastarosti$Spol=="Oba spola"), ]
 
 
 #Funkcija, ki uvozi in precisti tabelo potrosnje za sportne aktivnosti
 
-stolpci <- c("podrocje", "drzava" , "mera", "leto", "potrosnja", "prazno")
+stolpci <- c("Podrocje", "Drzava" , "Mera", "Leto", "Potrosnja", "Prazno")
 potrosnjakupnamoc <- read_csv("podatki/potrosnjakupnamoc.csv", 
                               locale=locale(encodin="cp1250"),
                               col_names=stolpci,
                               skip=1,
                               n_max=77,
                               na=c(":", "", " "))
-podatki <- potrosnjakupnamoc %>% fill(1:6) %>% drop_na(leto)
-podatki$mera <- NULL
-podatki$leto <- NULL
-podatki$prazno <- NULL
+podatki <- potrosnjakupnamoc %>% fill(1:6) %>% drop_na(Leto)
+podatki$Mera <- NULL
+podatki$Leto <- NULL
+podatki$Prazno <- NULL
 podatki = podatki[,c(2,1,3)]
-ociscenapotrosnjakupnamoc <- podatki %>% arrange(drzava)
+ociscenapotrosnjakupnamoc <- podatki %>% arrange(Drzava)
 
-totalociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$podrocje=="Total"), ] 
-totalociscenapotrosnjakupnamoc$podrocje <- NULL
+totalociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Total"), ] 
+totalociscenapotrosnjakupnamoc$Podrocje <- NULL
 
-sportociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$podrocje=="Sports goods and services"), ] 
-sportociscenapotrosnjakupnamoc$podrocje <- NULL
+sportociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Sports goods and services"), ] 
+sportociscenapotrosnjakupnamoc$Podrocje <- NULL
 
-outdoorociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$podrocje=="Major durables for outdoor recreation"), ] 
-outdoorociscenapotrosnjakupnamoc$podrocje <- NULL
+outdoorociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Major durables for outdoor recreation"), ] 
+outdoorociscenapotrosnjakupnamoc$Podrocje <- NULL
 
-indoorociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$podrocje=="Major durables for indoor recreation"), ] 
-indoorociscenapotrosnjakupnamoc$podrocje <- NULL
+indoorociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Major durables for indoor recreation"), ] 
+indoorociscenapotrosnjakupnamoc$Podrocje <- NULL
 
-opremaociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$podrocje=="Equipment for sport, camping and open-air recreation"), ] 
-opremaociscenapotrosnjakupnamoc$podrocje <- NULL
+opremaociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Equipment for sport, camping and open-air recreation"), ] 
+opremaociscenapotrosnjakupnamoc$Podrocje <- NULL
 
 
 
@@ -71,7 +76,7 @@ opremaociscenapotrosnjakupnamoc$podrocje <- NULL
 
 #funkcija, ki uvozi in prečisti tabelo bolezni
 
-stolpci <- c("leto", "drzava", "kvantil", "starost", "spol", "enota", "vrednost", "prazno")
+stolpci <- c("Leto", "Drzava", "Kvantil", "Starost", "Spol", "Enota", "Vrednost", "Prazno")
 bolezni <- read_csv("podatki/bolezni.csv", 
                     locale=locale(encoding="cp1250"), 
                     col_names=stolpci,
@@ -80,27 +85,32 @@ bolezni <- read_csv("podatki/bolezni.csv",
                     na=c(":","", " "))
 
 
-podatki <- bolezni %>% fill(1:5) %>% drop_na(leto)
-podatki$kvantil<- NULL
-podatki$enota<- NULL
-podatki$prazno<- NULL
-podatki$spol<-NULL
-podatki$leto<-parse_integer(podatki$leto)
-podatki %>% select(leto) %>% distinct()
-podatki %>% group_by(leto)
+podatki <- bolezni %>% fill(1:5) %>% drop_na(Leto)
+podatki$Kvantil<- NULL
+podatki$Enota<- NULL
+podatki$Prazno<- NULL
+podatki$Spol<-NULL
+podatki$Leto<-parse_integer(podatki$Leto)
+podatki %>% select(Leto) %>% distinct()
+podatki %>% group_by(Leto)
 
-ociscenebolezni<-subset(podatki, starost=="From 16 to 19 years" | starost=="Total" | starost=="From 16 to 44 years")
-ociscenebolezni <- filter(ociscenebolezni, !is.na(vrednost)) %>% arrange(drzava, leto)
+ociscenebolezni<-subset(podatki, Starost %in% c("From 16 to 19 years",
+                                                "Total",
+                                                "From 16 to 44 years"))
+ociscenebolezni <- filter(ociscenebolezni, !is.na(Vrednost)) %>% arrange(Drzava, Leto)
 ociscenebolezni <- ociscenebolezni[c(2,1,3,4)]
+ociscenebolezni$Starost <- gsub("Total", "Skupaj", ociscenebolezni$Starost)
+ociscenebolezni$Starost <- gsub("From 16 to 19 years", "16 do 19 let", ociscenebolezni$Starost)
+ociscenebolezni$Starost <- gsub("From 16 to 44 years", "16 do 44 let", ociscenebolezni$Starost)
 
-totalociscenihbolezni <- ociscenebolezni[(ociscenebolezni$starost=="Total"), ] 
-totalociscenihbolezni$starost <- NULL
+totalociscenihbolezni <- ociscenebolezni[(ociscenebolezni$Starost=="Skupaj"), ] 
+totalociscenihbolezni$Starost <- NULL
 
-mladiociscenebolezni <- ociscenebolezni[(ociscenebolezni$starost=="From 16 to 19 years"), ] 
-mladiociscenebolezni$starost <- NULL
+mladiociscenebolezni <- ociscenebolezni[(ociscenebolezni$Starost=="16 do 19 let"), ] 
+mladiociscenebolezni$Starost <- NULL
 
-starejsiociscenebolezni <- ociscenebolezni[(ociscenebolezni$starost=="From 16 to 44 years"), ]
-starejsiociscenebolezni$starost <- NULL
+starejsiociscenebolezni <- ociscenebolezni[(ociscenebolezni$Starost=="16 do 44 let"), ]
+starejsiociscenebolezni$Starost <- NULL
 
 
 
@@ -108,26 +118,29 @@ starejsiociscenebolezni$starost <- NULL
 
 #funkcija, ki uvozi in prečisti tabelo deleža potrošnje
 
-stolpci<-c("leto", "drzava", "enota", "področje", "delež", "prazno")
+stolpci<-c("Leto", "Drzava", "Enota", "Podrocje", "Delez", "Prazno")
 delezpotrosnje <- read_csv("podatki/delezpotrosnje.csv",
                            locale=locale(encoding="cp1250"),
                            col_names=stolpci,
                            skip=1,
                            n_max=1260,
                            na=c(":", "", " "))
-podatki<-delezpotrosnje %>% fill(1:6) %>% drop_na(leto)
-podatki$prazno<-NULL
-podatki$leto<-parse_integer(podatki$leto)
-ociscenadelezpotrosnje <-subset(podatki, enota=="Percentage of total" & področje!="Other major durables for recreation and culture")
-ociscenadelezpotrosnje$enota <- NULL
-ociscenadelezpotrosnje = ociscenadelezpotrosnje %>% arrange(drzava, leto)
+podatki<-delezpotrosnje %>% fill(1:6) %>% drop_na(Leto)
+podatki$Prazno<-NULL
+podatki$Leto<-parse_integer(podatki$Leto)
+ociscenadelezpotrosnje <-subset(podatki, Drzava !="Bosnia and Herzegovina" & Drzava !="Switzerland" &
+                                Enota=="Percentage of total" & Podrocje!="Other major durables for recreation and culture")
+ociscenadelezpotrosnje$Enota <- NULL
+ociscenadelezpotrosnje = ociscenadelezpotrosnje %>% arrange(Drzava, Leto)
 ociscenadelezpotrosnje <- ociscenadelezpotrosnje[c(2,1,3,4)]
+ociscenadelezpotrosnje$Podrocje <- gsub("Health", "Zdravje", ociscenadelezpotrosnje$Podrocje)
+ociscenadelezpotrosnje$Podrocje <- gsub("Recreation and culture", "Kultura in sport", ociscenadelezpotrosnje$Podrocje)
 
-zdravjeociscenadelezpotrosnje <- ociscenadelezpotrosnje[(ociscenadelezpotrosnje$področje=="Health"), ]
-zdravjeociscenadelezpotrosnje$področje <- NULL
+zdravjeociscenadelezpotrosnje <- ociscenadelezpotrosnje[(ociscenadelezpotrosnje$Podrocje=="Zdravje"), ]
+zdravjeociscenadelezpotrosnje$Podrocje <- NULL
 
-rekreacijaociscenadelezpotrosnje <- ociscenadelezpotrosnje[(ociscenadelezpotrosnje$področje=="Recreation and culture"), ]
-rekreacijaociscenadelezpotrosnje$področje <- NULL
+rekreacijaociscenadelezpotrosnje <- ociscenadelezpotrosnje[(ociscenadelezpotrosnje$Podrocje=="Kultura in sport"), ]
+rekreacijaociscenadelezpotrosnje$Podrocje <- NULL
 
 
 
@@ -179,8 +192,11 @@ data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %
 
 data = data %>% arrange(Drzava, Spol)
 data <- data[c(TRUE,rep(FALSE,1)),]
+data$Spol <- gsub("Both sexes", "Oba spola", data$Spol)
+data$Spol <- gsub("Female", "Zenske", data$Spol)
+data$Spol <- gsub("Male", "Moski", data$Spol)
 
-datazemljevid <- data[(data$Spol=="Both sexes"), ]
+datazemljevid <- data[(data$Spol=="Oba spola"), ]
 #link <- "http://apps.who.int/gho/athena/data/GHO/NCD_PAC,NCD_PAA?profile=xtab&format=html&x-topaxis=GHO;SEX&x-sideaxis=COUNTRY;YEAR;AGEGROUP&x-title=table&filter=AGEGROUP:YEARS18-PLUS;COUNTRY:*;SEX:*;"
 #json <- html_session(link) %>% read_html() %>% html_nodes(xpath="//script[not(@src)]") %>%3
 #.[[1]] %>% html_text() %>% strapplyc("(\\{.*\\})") %>% unlist() %>% fromJSON() %>% .$Crosstable
