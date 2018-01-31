@@ -18,7 +18,15 @@ library(shiny)
 
 shinyUI(fluidPage(
   titlePanel("Potrošnja po področjih"),
-  sidebarLayout(
-    sidebarPanel("Izbor države"),
-    mainPanel("Graf potrošnje", img(src="potrosnja.jpg", height=80, weigth=60)))
-))
+  
+  tabsetPanel(
+    
+    tabPanel("Države",
+             sidebarPanel(
+               uiOutput("drzava")),
+      
+    mainPanel(
+        textOutput("selected_var"),
+        plotOutput("drzavaPlot")
+          
+)))))

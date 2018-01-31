@@ -25,5 +25,36 @@ library(shiny)
 
 
 shinyServer(function(input, output){
+  output$selected_var <- renderText({ 
+    paste("Izbrana država je", input$var)
+    })
   
-})
+  output$drzava <- renderUI(
+    selectInput("var", label = "Izberi državo",
+                choices = c("Slovenia",
+                "Latvia",
+                "Bulgaria",
+                "Belgium",
+                "France",
+                "Finland",
+                "Luxembourg",
+                "Greece",
+                "Germany",
+                "Denmark",
+                "Italy")))
+  
+  
+  
+  output$drzavaPlot <- renderPlot({
+      t <- ociscenapotrosnjakupnamoc %>% filter(Drzava == input$var) %>% filter(Podrocje != "Total")
+    ggplot(t, aes(x=Podrocje, y=Potrosnja)) + geom_bar(stat="identity", position="dodge", fill="skyblue") +
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+      labs(title="Prikaz potrošnje izbrane države po področjih", x="Področje", y="Potrošnja")
+      
+    
+   
+  })
+    
+  
+}
+)
