@@ -24,9 +24,25 @@ shinyUI(fluidPage(
     tabPanel("Države",
              sidebarPanel(
                uiOutput("drzava")),
+    mainPanel(
+      textOutput("selected_var"),
+      plotOutput("drzavaPlot"))),
+    
+    
+    
+    
+             
+    tabPanel("Potrošnja in bolezni",
+             sidebarPanel(
+               sliderInput("year", "Izberi leto",
+                                   min = 2007, 
+                                   max = 2015,
+                                   value = 2007)),
       
     mainPanel(
-        textOutput("selected_var"),
-        plotOutput("drzavaPlot")
+      plotOutput("potrosnjaPlot"),
+      textOutput("drsnik")
+    )
+        
           
-)))))
+))))

@@ -26,7 +26,7 @@ library(shiny)
 
 shinyServer(function(input, output){
   output$selected_var <- renderText({ 
-    paste("Izbrana država je", input$var)
+    paste("Izbrana država je", input$var, "!")
     })
   
   output$drzava <- renderUI(
@@ -43,18 +43,29 @@ shinyServer(function(input, output){
                 "Denmark",
                 "Italy")))
   
+  output$potrosnjaPlot <- renderPlot({
+    d <- nova3 %>% filter(Leto == input$year)
+    ggplot(d, aes(x=Potrosnja, y=Vrednost, color= Drzava)) + geom_dotplot()
+  })
+
   
   
   output$drzavaPlot <- renderPlot({
       t <- ociscenapotrosnjakupnamoc %>% filter(Drzava == input$var) %>% filter(Podrocje != "Total")
-    ggplot(t, aes(x=Podrocje, y=Potrosnja)) + geom_bar(stat="identity", position="dodge", fill="skyblue") +
+    ggplot(t, aes(x=Podrocje, y=Potrosnja)) +
+      geom_bar(stat="identity", position="dodge", fill="skyblue") +
       theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
       labs(title="Prikaz potrošnje izbrane države po področjih", x="Področje", y="Potrošnja")
+  })
       
+  output$drsnik <- renderText({
+    paste("Izbrali ste leto", input$year, "!")
+  })
+  
+
     
    
   })
     
   
-}
-)
+
