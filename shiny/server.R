@@ -45,10 +45,11 @@ shinyServer(function(input, output){
   
   output$potrosnjaPlot <- renderPlot({
     d <- nova3 %>% filter(Leto == input$year)
-    ggplot(d, aes(x=Potrosnja, y=Vrednost, color= Drzava)) + geom_dotplot()
+    ggplot(d, aes(x=Potrosnja, y=Vrednost, color = Drzava)) + geom_jitter(size=6) +
+      labs(title="Število obolelih v odvisnosti od potrošnje za šport in zdravje", 
+           x="Potrošnja", y="Število bolnih", color = "Država")
   })
 
-  
   
   output$drzavaPlot <- renderPlot({
       t <- ociscenapotrosnjakupnamoc %>% filter(Drzava == input$var) %>% filter(Podrocje != "Total")
@@ -62,6 +63,14 @@ shinyServer(function(input, output){
     paste("Izbrali ste leto", input$year, "!")
   })
   
+  output$gumbi <- renderText ({
+    paste("Izbran spol je :", input$radio, "!")
+  })
+  
+  output$aktivnostPlot <- renderPlot({
+    h <- nova4 %>% filter(Spol==input$radio)
+    ggplot(h, aes(x=Starost, y=Stevilo, color = Drzava)) + geom_jitter(size = 5)
+  })
 
     
    

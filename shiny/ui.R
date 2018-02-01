@@ -21,7 +21,7 @@ shinyUI(fluidPage(
   
   tabsetPanel(
     
-    tabPanel("Države",
+    tabPanel("Potrošnja držav",
              sidebarPanel(
                uiOutput("drzava")),
     mainPanel(
@@ -40,9 +40,22 @@ shinyUI(fluidPage(
                                    value = 2007)),
       
     mainPanel(
-      plotOutput("potrosnjaPlot"),
-      textOutput("drsnik")
+      textOutput("drsnik"),
+      plotOutput("potrosnjaPlot")
+    )),
+    
+    
+    
+    tabPanel("Aktivnost in starost",
+             sidebarPanel(
+               radioButtons("radio", "Izberi spol",
+                            choices=c("Moski", "Zenske", "Oba spola"), 
+                            selected = "Oba spola")),
+    mainPanel(
+      textOutput("gumbi"),
+      plotOutput("aktivnostPlot")
     )
+             )
         
           
-))))
+)))

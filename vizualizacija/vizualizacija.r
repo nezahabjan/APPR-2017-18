@@ -41,9 +41,9 @@ graf4 <- plot_ly(data=nova4, labels =~Drzava, values =~Stevilo, type="pie",
   layout(title="Delež neaktivnih po državah")
 
 #graf neaktivnosti v povezavi z docakano starostjo
-grafnova4 <- ggplot(data=nova4, aes(x=Stevilo, y=Starost)) +
-  geom_jitter(aes(col=Drzava)) + geom_smooth(aes(col=Drzava), method="lm", se=F, lwd=4) + 
-  labs(col="Država", x="Število neaktivnih", title="Vpliv športne neaktivnosti na dočakano starost")
+#grafnova4 <- ggplot(data=nova4, aes(x=Stevilo, y=Starost)) +
+#  geom_jitter(aes(col=Drzava)) + geom_smooth(aes(col=Drzava), method="lm", se=F, lwd=4) + 
+#  labs(col="Država", x="Število neaktivnih", title="Vpliv športne neaktivnosti na dočakano starost")
 
   
 #Graf potrosnje za posamezna sportna podrocja po izbranih drzavah  
