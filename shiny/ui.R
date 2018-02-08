@@ -25,6 +25,9 @@ shinyUI(fluidPage(
              sidebarPanel(
                uiOutput("drzava")),
     mainPanel(
+      p("raf prikazuje potrošnjo izbrane države lede na različna področja, kot so športni pripomočki in 
+         oprema, storitve, radnja in obnova zunanji in notranji športni objektov v državi,... 
+        Potrošnja je preračunana v splošno denarno valuto, lede na trenutne devizne tečaje." ),
       textOutput("selected_var"),
       plotOutput("drzavaPlot"))),
     
@@ -34,7 +37,7 @@ shinyUI(fluidPage(
              
     tabPanel("Potrošnja in bolezni",
              sidebarPanel(
-               sliderInput("year", "Izberi leto",
+               sliderInput("year", "Izberite leto",
                                    min = 2007, 
                                    max = 2015,
                                    value = 2007)),
@@ -48,8 +51,8 @@ shinyUI(fluidPage(
     
     tabPanel("Aktivnost in starost",
              sidebarPanel(
-               radioButtons("radio", "Izberi spol",
-                            choices=c("Moski", "Zenske", "Oba spola"), 
+               radioButtons("radio", "Izberite spol",
+                            choices=c ("Oba spola", "Moski", "Zenske"), 
                             selected = "Oba spola")),
     mainPanel(
       textOutput("gumbi"),

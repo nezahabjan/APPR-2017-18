@@ -57,17 +57,11 @@ ociscenapotrosnjakupnamoc <- podatki %>% arrange(Drzava)
 totalociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Total"), ] 
 totalociscenapotrosnjakupnamoc$Podrocje <- NULL
 
-sportociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Sports goods and services"), ] 
-sportociscenapotrosnjakupnamoc$Podrocje <- NULL
-
-outdoorociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Major durables for outdoor recreation"), ] 
-outdoorociscenapotrosnjakupnamoc$Podrocje <- NULL
-
-indoorociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Major durables for indoor recreation"), ] 
-indoorociscenapotrosnjakupnamoc$Podrocje <- NULL
-
-opremaociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Equipment for sport, camping and open-air recreation"), ] 
-opremaociscenapotrosnjakupnamoc$Podrocje <- NULL
+#ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
+#ociscenapotrosnjakupnamoc$Podrocje <- gsub("Sports oods and services", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
+#ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
+#ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
+#ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
 
 
 
