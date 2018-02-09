@@ -34,25 +34,17 @@ ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid,
   coord_cartesian(xlim = c(-25, 35), ylim = c(35, 70))
 
 
-#graf stevila premalo aktivnih po drzavah
-bp<- ggplot(nova4, aes(x="", y=Stevilo, fill=Drzava))+
-  geom_bar(width = 1, stat = "identity") + coord_polar("y", start=0) +
-  labs(title="Delež neaktivnih po državah", fill="Država", x="", y="")
-  
 
+  
+#graf deleža neaktivnih ljudi po posameznih državah 
 graf4 <- plot_ly(data=nova4, labels =~Drzava, values =~Stevilo, type="pie", 
                  textposition ="outside",
                  textinfo ="label+value") %>%
   layout(title="Delež neaktivnih po državah")
 
-#graf neaktivnosti v povezavi z docakano starostjo
-#grafnova4 <- ggplot(data=nova4, aes(x=Stevilo, y=Starost)) +
-#  geom_jitter(aes(col=Drzava)) + geom_smooth(aes(col=Drzava), method="lm", se=F, lwd=4) + 
-#  labs(col="Država", x="Število neaktivnih", title="Vpliv športne neaktivnosti na dočakano starost")
 
-  
-#Graf potrosnje za posamezna sportna podrocja po izbranih drzavah  
-graf1 <- ggplot(data=subset(ociscenapotrosnjakupnamoc, Podrocje != "Total"), 
+#Graf potrosnje za posamezna sportna podrocja po izbranih drzavah, v univerzalni denarni valuti  
+graf1 <- ggplot(data=subset(ociscenapotrosnjakupnamoc, Podrocje != "Skupaj"), 
                 aes(x=Drzava, y=Potrosnja, 
                     fill=factor(Podrocje, labels = c("Športna oprema",
                                                      "Vzdrževanje športnih objektov",
@@ -63,7 +55,7 @@ graf1 <- ggplot(data=subset(ociscenapotrosnjakupnamoc, Podrocje != "Total"),
    geom_bar(stat = "identity", position="stack") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   labs(fill = "Področje",
-       title="Potrošnja za posamezna športna področja", y="Potrošnja", x="Država")
+       title="Potrošnja za posamezna športna področja", y="Potrošnja v univerzalni valuti", x="Država")
 
 
 #graf gibanja deleza bolnih po izbranih drzavah
@@ -75,14 +67,15 @@ graf2 <- ggplot(data=subset(totalociscenihbolezni, Drzava %in% c("Finland",
                                                                 "Luxembourg",
                                                                 "Latvia")),
                             aes(x=Leto, y=Vrednost, color=Drzava)) + geom_line(size=3) + 
-  labs(color="Država", y="Delež obolelih", title="Delež obolelih po državah")
+  labs(color="Država", y="Delež obolelih (v %)", title="Delež obolelih po državah")
 
 
 #graf deleza potrosnje za zdravje in rekreacijo, po drzavah
-graf3 <- ggplot(data=ociscenadelezpotrosnje, aes(x=Leto, y=Delez, fill=Drzava)) + 
+graf3 <- ggplot(data=ociscenadelezpotrosnje, aes(x=Leto, y=Delez/12, fill="pink")) + 
   geom_bar(stat="identity", position="stack") + facet_grid(.~ Podrocje) +
-  labs(fill="Država", y="Delež", title="Deleža potrošnje za zdravje in rekreacijo")
-
+  labs(y="Povprečni delež potrošnje (v %)", fill="Barva",
+       title="Povprečna deleža potrošnje izbranih držav za zdravje in šport") 
+  
 
 #napoved stevila oblelih v Sloveniji, glede na preteklih 8 let
 ociscena <- subset(totalociscenihbolezni, Drzava == "Slovenia")
@@ -92,7 +85,7 @@ predict(fit, a)
 napoved <- a %>% mutate(Vrednost=predict(fit, .))
 graf5 <- ggplot(ociscena, aes(x=Leto, y=Vrednost)) +
   geom_smooth(method=lm, se=FALSE) +
-  geom_point(data=napoved, aes(x=Leto, y=Vrednost), color="blue", size=3) +
+  geom_point(data=napoved, aes(x=Leto, y=Vrednost), color="green", size=3) +
   labs(title="Napoved števila obolelih za Slovenijo", y="Število obolelih")
 
 
