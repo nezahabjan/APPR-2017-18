@@ -25,9 +25,9 @@ shinyUI(fluidPage(
              sidebarPanel(
                uiOutput("drzava")),
     mainPanel(
-      p("raf prikazuje potrošnjo izbrane države lede na različna področja, kot so športni pripomočki in 
-         oprema, storitve, radnja in obnova zunanji in notranji športni objektov v državi,... 
-        Potrošnja je preračunana v splošno denarno valuto, lede na trenutne devizne tečaje." ),
+      p("Graf prikazuje potrošnjo izbrane države glede na različna področja, kot so športni pripomočki in 
+         oprema, storitve, gradnja in obnova zunanjih in notranjih športnih objektov v državi,... 
+        Potrošnja je preračunana v splošno denarno valuto, glede na trenutne devizne tečaje." ),
       textOutput("selected_var"),
       plotOutput("drzavaPlot"))),
     

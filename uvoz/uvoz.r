@@ -20,7 +20,7 @@ tabelastarosti <- subset(tabelastarosti,
                            Drzava=="Denmark"|
                            Drzava=="Germany"|
                            Drzava=="Greece"|
-                           Drzava=="France"|
+                           Drzava=="France (metropol.)"|
                            Drzava=="Italy"|
                            Drzava=="Latvia"|
                            Drzava=="Luxembourg"|
@@ -29,10 +29,10 @@ tabelastarosti <- subset(tabelastarosti,
                            Drzava=="Bosnia and Herzegovina"|
                            Drzava=="Switzerland")
 tabelastarosti <- tabelastarosti %>% arrange(Drzava)
+tabelastarosti[c(16, 17, 18), "Drzava"] <- "France"
 tabelastarosti$Spol <- gsub("Both sexes", "Oba spola", tabelastarosti$Spol)
 tabelastarosti$Spol <- gsub("Male", "Moski", tabelastarosti$Spol)
 tabelastarosti$Spol <- gsub("Female", "Zenske", tabelastarosti$Spol)
-                                                            
 
 
 tabelastarostizemljevid <- tabelastarosti[(tabelastarosti$Spol=="Oba spola"), ]
@@ -57,13 +57,13 @@ ociscenapotrosnjakupnamoc <- podatki %>% arrange(Drzava)
 totalociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Total"), ] 
 totalociscenapotrosnjakupnamoc$Podrocje <- NULL
 
-#ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
-#ociscenapotrosnjakupnamoc$Podrocje <- gsub("Sports oods and services", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
-#ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
-#ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
-#ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
-
-
+ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
+ociscenapotrosnjakupnamoc$Podrocje <- gsub("Sports goods and services", "Sportne storitve", ociscenapotrosnjakupnamoc$Podrocje) 
+ociscenapotrosnjakupnamoc$Podrocje <- gsub("Major durables for outdoor recreation", "Gradnja zunanjih sportnih objektov", ociscenapotrosnjakupnamoc$Podrocje) 
+ociscenapotrosnjakupnamoc$Podrocje <- gsub("Major durables for indoor recreation", "Gradnja notranjih sportnih objektov", ociscenapotrosnjakupnamoc$Podrocje) 
+ociscenapotrosnjakupnamoc$Podrocje <- gsub("Maintenance and repair of other major durables for recreation and culture", "Vzdrževanje in obnova rekreacijskih objektov", ociscenapotrosnjakupnamoc$Podrocje) 
+ociscenapotrosnjakupnamoc$Podrocje <- gsub("Equipment for sport, camping and open-air recreation", "Sportna oprema in pripomocki", ociscenapotrosnjakupnamoc$Podrocje) 
+ociscenapotrosnjakupnamoc$Podrocje <- gsub("Recreational and sporting services", "Rekreacijske storitve", ociscenapotrosnjakupnamoc$Podrocje) 
 
 
 
@@ -191,62 +191,7 @@ data$Spol <- gsub("Female", "Zenske", data$Spol)
 data$Spol <- gsub("Male", "Moski", data$Spol)
 
 datazemljevid <- data[(data$Spol=="Oba spola"), ]
-#link <- "http://apps.who.int/gho/athena/data/GHO/NCD_PAC,NCD_PAA?profile=xtab&format=html&x-topaxis=GHO;SEX&x-sideaxis=COUNTRY;YEAR;AGEGROUP&x-title=table&filter=AGEGROUP:YEARS18-PLUS;COUNTRY:*;SEX:*;"
-#json <- html_session(link) %>% read_html() %>% html_nodes(xpath="//script[not(@src)]") %>%3
-#.[[1]] %>% html_text() %>% strapplyc("(\\{.*\\})") %>% unlist() %>% fromJSON() %>% .$Crosstable
 
-#matrika <- json$Matrix %>% sapply(. %>% sapply(. %>% .[[1]] %>% .$disp)) %>% t()
-#glava <- . %>% .$header %>% lapply(. %>% .[-1] %>% unlist() %>% { json$code[.+1] } %>%
-#                                     sapply(. %>% .$disp))
-#stolpci <- json$Vertical$layer %>% unlist() %>% { json$dimension[.+1] } %>% sapply(. %>% .$disp)
-#
-#matrika <- json$Matrix %>% sapply(. %>% sapply(. %>% .[[1]] %>% .$disp)) %>% t()
-#glava <- . %>% .$header %>% lapply(. %>% .[-1] %>% unlist() %>% { json$code[.+1] } %>%
-#                                     sapply(. %>% .$disp))
-#stolpci <- json$Vertical$layer %>% unlist() %>% { json$dimension[.+1] } %>% sapply(. %>% .$disp)
-#colnames(matrika) <- glava(json$Horizontal) %>% sapply(paste, collapse = ",")
-#data <- glava(json$Vertical) %>% lapply(. %>% as.list() %>% setNames(stolpci)) %>%
-#  bind_rows() %>% cbind(matrika) %>% melt(id.vars = 1:3) %>%
-#  mutate(Country = factor(Country), Year = parse_number(Year),
-#         value = parse_character(value, na = "No data"),
-#variable = parse_character(variable)) %>% drop_na(value)%>%
-#  mutate(Indicator = variable %>% strapplyc("^([^,]+)") %>% unlist() %>% factor(),
-#         Sex = variable %>% strapplyc("([^,]+)$") %>% unlist() %>% factor(),
-#         Value = value %>% strapplyc("^([0-9.]+)") %>% unlist(),
-#         Lower = value %>% strapplyc("\\[([0-9.]+)") %>% unlist(),
-#         Upper = value %>% strapplyc("([0-9.]+)\\]") %>% unlist()) %>%
-#  select(-variable, -value) %>% melt(measure.vars = c("Value", "Lower", "Upper"),
-#                                     variable.name = "Statistic",
-#                                     value.name = "Value")
-
-
-
-#data<-filter(data, Country=="Belgium"|
-#             Country=="Bosnia and Herzegovina"|
-##             Country=="Denmark"|
-#             Country=="Finland"|
-#             Country=="Germany"|
-#             Country=="Greece"|
-#             Country=="Italy"|
-#             Country=="Latvia"|
-#             Country=="Slovenia"|
-#             Country=="France"|
-#             Country=="Luxembourg"|
-#             Country=="Bulgaria")
-#data = data[data$Indicator=="Insufficiently active (crude estimate)",]
-#data$Indicator <- NULL
-#data$Year <- NULL
-#data$`Age Group` <- NULL
-#data = data %>% arrange(Country, Sex) 
-#data = rename(data, c(Country="Drzava", Sex="Spol", variable="Vrednost", value="Stevilo"))
-#data$Spol <- gsub("Both sexes", "Oba spola", data$Spol)
-#data$Spol <- gsub("Female", "Zenske", data$Spol)
-#data$Spol <- gsub("Male", "Moski", data$Spol)
-#data$Vrednost <- gsub("Value", "Povprecje", data$Vrednost)
-#data$Vrednost <- gsub("Upper", "Zgornja meja", data$Vrednost)
-#data$Vrednost <- gsub("Lower", "Spodnja meja", data$Vrednost)
-#data <- subset(data, data$Vrednost=="Povprecje")
-#data$Vrednost <- NULL
 
 
 

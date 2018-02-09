@@ -35,6 +35,11 @@ ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid,
 
 
 #graf stevila premalo aktivnih po drzavah
+bp<- ggplot(nova4, aes(x="", y=Stevilo, fill=Drzava))+
+  geom_bar(width = 1, stat = "identity") + coord_polar("y", start=0) +
+  labs(title="Delež neaktivnih po državah", fill="Država", x="", y="")
+  
+
 graf4 <- plot_ly(data=nova4, labels =~Drzava, values =~Stevilo, type="pie", 
                  textposition ="outside",
                  textinfo ="label+value") %>%
