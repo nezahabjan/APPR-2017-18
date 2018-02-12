@@ -61,7 +61,7 @@ ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjak
 ociscenapotrosnjakupnamoc$Podrocje <- gsub("Sports goods and services", "Sportne storitve", ociscenapotrosnjakupnamoc$Podrocje) 
 ociscenapotrosnjakupnamoc$Podrocje <- gsub("Major durables for outdoor recreation", "Gradnja zunanjih sportnih objektov", ociscenapotrosnjakupnamoc$Podrocje) 
 ociscenapotrosnjakupnamoc$Podrocje <- gsub("Major durables for indoor recreation", "Gradnja notranjih sportnih objektov", ociscenapotrosnjakupnamoc$Podrocje) 
-ociscenapotrosnjakupnamoc$Podrocje <- gsub("Maintenance and repair of other major durables for recreation and culture", "Vzdrževanje in obnova rekreacijskih objektov", ociscenapotrosnjakupnamoc$Podrocje) 
+ociscenapotrosnjakupnamoc$Podrocje <- gsub("Maintenance and repair of other major durables for recreation and culture", "Vzdrzevanje in obnova rekreacijskih objektov", ociscenapotrosnjakupnamoc$Podrocje) 
 ociscenapotrosnjakupnamoc$Podrocje <- gsub("Equipment for sport, camping and open-air recreation", "Sportna oprema in pripomocki", ociscenapotrosnjakupnamoc$Podrocje) 
 ociscenapotrosnjakupnamoc$Podrocje <- gsub("Recreational and sporting services", "Rekreacijske storitve", ociscenapotrosnjakupnamoc$Podrocje) 
 

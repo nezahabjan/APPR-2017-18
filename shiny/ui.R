@@ -17,7 +17,7 @@ library(shiny)
 #))
 
 shinyUI(fluidPage(
-  titlePanel("Potrošnja po področjih"),
+  titlePanel("Zdravstveno stanje državljanov v odvisnosti od rekreacije in potrošnje za šport"),
   
   tabsetPanel(
     
@@ -43,6 +43,9 @@ shinyUI(fluidPage(
                                    value = 2007)),
       
     mainPanel(
+      p("Graf prikazuje odvisnost deleža resno obolelih državljanov od velikosti njihove potrošnje
+        za šport in zdravje. Ta je v grafu izražena v univerzalni valuti, število obolelih pa je 
+        izraženo v odstotkih od števila vseh prebivalcev v posamezni državi."),
       textOutput("drsnik"),
       plotOutput("potrosnjaPlot")
     )),

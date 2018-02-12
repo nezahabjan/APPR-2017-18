@@ -45,9 +45,10 @@ shinyServer(function(input, output){
   
   output$potrosnjaPlot <- renderPlot({
     d <- nova3 %>% filter(Leto == input$year)
-    ggplot(d, aes(x=Potrosnja, y=Vrednost, color = Drzava)) + geom_jitter(size=6) +
+    ggplot(d, aes(x=Potrosnja, y=Vrednost, color = Drzava)) + geom_point(size=6) +
+      geom_smooth(method=lm, se=FALSE) +
       labs(title="Število obolelih v odvisnosti od potrošnje za šport in zdravje", 
-           x="Potrošnja", y="Delež bolnih (v %)", color = "Država")
+           x="Potrošnja v univerzalni valuti", y="Delež bolnih (v %)", color = "Država")
   })
 
   
@@ -56,7 +57,7 @@ shinyServer(function(input, output){
     ggplot(t, aes(x=Podrocje, y=Potrosnja)) +
       geom_bar(stat="identity", position="dodge", fill="skyblue") +
       theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1)) +
-      labs(title="Prikaz potrošnje izbrane države po področjih", x="Področje", y="Potrošnja")
+      labs(title="Prikaz potrošnje izbrane države po področjih", x="Področje", y="Potrošnja v univerzalni valuti")
   })
       
   output$drsnik <- renderText({
@@ -70,7 +71,7 @@ shinyServer(function(input, output){
   output$aktivnostPlot <- renderPlot({
     h <- nova4 %>% filter(Spol==input$radio)
     ggplot(h, aes(x=Starost, y=Stevilo, color = Drzava)) + geom_jitter(size = 5) +
-      labs(title="Prikaz povezave med povprečno dočakano starostjo in številom neaktivni", 
+      labs(title="Prikaz povezave med povprečno dočakano starostjo in številom neaktivnih", 
            x="Povprečna življenjska doba", y="Delež neaktivnih državljanov (v %)", color="Država")
   })
 

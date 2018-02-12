@@ -23,14 +23,14 @@ zemljevid <- zemljevid %>% filter (CONTINENT %in% c("Europe")|
 ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid, 
                                          by=c("NAME_LONG"="Drzava")), 
                         aes(x=long, y=lat, group = group, fill = Stevilo)) + 
-  guides(legend) + ggtitle("Sportna aktivnost drzavljanov") + 
+  guides(legend) + labs(title="Prikaz stevila premalo aktivnih drzavljanov v (%)") + 
   coord_cartesian(xlim = c(-25, 35), ylim = c(35, 70))
 
 #Zemljevid, ki prikazuje povprečno življenjsko dobo državljanov v posameznih evropskih državah
 ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid, 
                                          by=c("NAME_LONG"="Drzava")), 
                         aes(x=long, y=lat, group = group, fill = Starost)) + 
-  guides(legend) + ggtitle("Povprecna zivljenjska doba") +
+  guides(legend) + ggtitle("Prikaz povprecne zivljenjske dobe") +
   coord_cartesian(xlim = c(-25, 35), ylim = c(35, 70))
 
 
