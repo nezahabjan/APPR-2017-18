@@ -1,21 +1,5 @@
 library(shiny)
 
-#shinyUI(fluidPage(
-#  
-#  titlePanel("Potrošnja po področjih"),
-#  
-#  tabsetPanel(
-#      tabPanel("Velikost družine",
-#               DT::dataTableOutput("druzine")),
-#      
-#      tabPanel("Število naselij",
-#               sidebarPanel(
-#                  uiOutput("pokrajine")
-#                ),
-#               mainPanel(plotOutput("naselja")))
-#    )
-#))
-
 shinyUI(fluidPage(
   titlePanel("Zdravstveno stanje državljanov v odvisnosti od rekreacije in potrošnje za šport"),
   
@@ -58,6 +42,8 @@ shinyUI(fluidPage(
                             choices=c ("Oba spola", "Moski", "Zenske"), 
                             selected = "Oba spola")),
     mainPanel(
+      p("Graf prikazuje odvisnost deleža neaktivnih državljanov od povprečne starosti, ki jo ti
+        dočakajo."),
       textOutput("gumbi"),
       plotOutput("aktivnostPlot")
     )
