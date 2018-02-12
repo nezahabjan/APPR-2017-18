@@ -84,41 +84,54 @@ ZDRUŽENI TABELI:
 source("vizualizacija/vizualizacija.r", encoding = "UTF-8")
 ```
 
-
-Spodnji prvi graf prikazuje vpliv deleža potrošnje za šport na število resneje obolelih državljanov v posamezni državi. Zanimivo je, da ne moremo v celoti potegniti smernic ki bi opisovale trende, saj vidimo da ima npr. Finska največjo potrošnjo za športne aktivnosti med vsemi, a je hkrati tudi število obolelih med največjimi. Po drugi strani Bolgarija za šport nameni skoraj najmanj denarja, bolnih pa je prav tako zelo malo.
-
-V naslednjem grafu sem želela predstaviti trende, kako športna aktivnost vpliva na življenjsko dobo ljudi. Iz grafa je razvidno, da višjo starost kot moški dočakajo ženske, kljub temu, da je pri prav vseh državah večji delež premalo aktivnih žensk kot pa moških.
+Prvi graf prikazuje višino potrošnje za posamezno športno področje, za vsako državo posebej. Vidimo lahko, da izbrane države največ denarja namenjajo rekreacijskim storitvam in pa gradnji in vzdrževanju tako notranjih kot tudi zunanjih športnih objektov. Zelo malo državljani zapravijo predvsem za športne pripomočke in opremo. Država, ki v splošnem zapravi za šport največ je Finska, najmanjši pomen pa temu daje Bolgarija. 
 
 ```{r graf1, echo=FALSE,warning=FALSE, message=FALSE, fig.align='center', fig.cap='Vpliv potrošnje za šport na število bolnih'}
-print(grafnova3)
+print(graf1)
 ```
 
+V naslednjem grafu sem želela prikazati gibanje deleža obolelih državljanov, v letih od 2007 do 2015, za vsako državo posebej. V večini primerov delež obolelih narašča, najbolj pa to naraščanje izstopa pri Finski in Latviji. Zanimivo krivuljo nam pokažejo tudi podatki za Bolgarijo, ki kažejo na precejšnji obrat v deležu obolelih v roku zadnjih 10 let.
+
 ```{r graf2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Vpliv športne aktivnosti na življenjsko dobo'}
-print(grafnova4)
+print(graf2)
+
+```
+
+Tretji graf prikazuje gibanje skupne potrošnje vse držav v letih od 2007 do 2015, za dve področji: zdravje ter kulturo in šport. Potrošnja je izražena v odstotkih od celotne potrošnje državljanov. Iz grafov je dobro vidno, da skupna potrošnja (v deležu od celotne) za šport in kulturo upada, pri zdravju pa  je viden obraten trend - potrošnja rahlo narašča. 
+
+```{r graf2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Vpliv športne aktivnosti na življenjsko dobo'}
+print(graf3)
+
+```
+
+četrti graf je tortni diagram in prikazuje delež neaktivni državljanov v posamezni državi. Vidimo lako, da je največji delež neaktivni v Belgiji in Italiji, najmanjši pa v Grčiji. dobljeni rezultat je zanimiv, saj so v Grčiji torej najbolj aktivni in krati dočakajo eno najvišji starosti, Italijani pa s svojo tretinjsko neaktivnostjo dočakajo celo višjo starost od grkov. 
+
+```{r graf2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Vpliv športne aktivnosti na življenjsko dobo'}
+print(graf4)
 
 ```
 
 
 Sledita še dva zemljevida. 
-Prvi prikazuje število premalo aktivnih državljanov izbranih držav po Evropi, pri čemer vidimo, da je le teh najmanj v Grčiji, največ pa v Italiji in Belgiji.
 
-Drugi zemljevid vsebuje podatke o življenjski dobi državljanov nekaterih Evropskih držav, kjer se vidi, da najvišjo starost dočakajo Italijani, najnižjo pa Bolgari in Latvijci.
+Prvi zemljevid je v sliki prikazan četrti graf. Nazorno se vidi, da so najbolj aktivni Grki, najmanj pa Italijani in Belgijci.
 
 ```{r zemljevid1, echo=FALSE,warning=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid aktivnosti državljanov'}
-
-
 ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid, 
                                          by=c("NAME_LONG"="Drzava")), 
                         aes(x=long, y=lat, group = group, fill = Stevilo)) + 
-  guides(legend) + ggtitle("Športna aktivnost državljanov")
+  guides(legend) + labs(title="Prikaz stevila premalo aktivnih drzavljanov v (%)") + 
+  coord_cartesian(xlim = c(-25, 35), ylim = c(35, 70))
 ```
 
-```{r zemljevid2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid življenjske dobe državljanov'}
+Drugi zemljevid vsebuje podatke o življenjski dobi državljanov nekaterih Evropskih držav, kjer se vidi, da najvišjo starost dočakajo Italijani, najnižjo pa Bolgari in Latvijci. rezultati so zelo zanimivi, saj ne moremo potegniti točnih smernic. Tako Italijani kot tudi Grki dočakajo ene najvišjih starosti, čeprav so si po aktivnosti povsem nasprotni.   
 
+
+```{r zemljevid2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid življenjske dobe državljanov'}
 ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid, 
                                          by=c("NAME_LONG"="Drzava")), 
                         aes(x=long, y=lat, group = group, fill = Starost)) + 
-  guides(legend) + ggtitle("Povprečna življenjska doba")
-
+  guides(legend) + ggtitle("Prikaz povprecne zivljenjske dobe") +
+  coord_cartesian(xlim = c(-25, 35), ylim = c(35, 70))
 ```
 

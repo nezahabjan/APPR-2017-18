@@ -74,7 +74,7 @@ graf2 <- ggplot(data=subset(totalociscenihbolezni, Drzava %in% c("Finland",
 graf3 <- ggplot(data=ociscenadelezpotrosnje, aes(x=Leto, y=Delez/12, fill="pink")) + 
   geom_bar(stat="identity", position="stack") + facet_grid(.~ Podrocje) +
   labs(y="Povprecni delez potrosnje (v %)", fill="Barva",
-       title="Povprecna deleca potrosnje izbranih drzav za zdravje in sport") 
+       title="Povprecna deleza potrosnje izbranih drzav za zdravje in sport") 
   
 
 #napoved stevila obolelih v Sloveniji, glede na preteklih 8 let
