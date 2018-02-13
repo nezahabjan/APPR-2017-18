@@ -37,10 +37,10 @@ ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid,
 
   
 #graf deleža neaktivnih ljudi po posameznih državah 
-graf4 <- plot_ly(data=nova4, labels =~Drzava, values =~Stevilo, type="pie", 
-                 textposition ="outside",
-                 textinfo ="label+value") %>%
-  layout(title="Delez neaktivnih po drzavah")
+#graf4 <- plot_ly(data=nova4, labels =~Drzava, values =~Stevilo, type="pie", 
+#                 textposition ="outside",
+#                 textinfo ="label+value") %>%
+#  layout(title="Delez neaktivnih po drzavah")
 
 
 #Graf potrosnje za posamezna sportna podrocja po izbranih drzavah, v univerzalni denarni valuti  
