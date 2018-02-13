@@ -1,5 +1,5 @@
 ---
-title: "Poročilo pri predmetu Analiza podatkov s programom R"
+title: "Analiza vpliva športnega udejstvovanja in potrošnje za šport na zdravje in življenjsko dobo ljudi"
 author: "NEŽA HABJAN"
 output:
   html_document: default
@@ -40,28 +40,28 @@ Spremenljivke:
 - Države
 - Delež premalo aktivnega prebivalstva
 - Življenjska doba
-- Delež dohodka, ki ga posameznik nameni športnim aktivnostim
+- Delež potrošnje namenjene športnim aktivnostim
 - Delež prebivalstva z daljšimi, resnejšimi boleznimi
 
 Tabele po vrsti prikazujejo:
 
-**1. TABELA**
+**1. TABELA** (html)
 povprečno življenjsko dobo državljanov izbranih držav v letih od 2010 do 2015
 (država, spol, starost)
 
-**2. TABELA**
-delež potrošnje za športne aktivnosti, ločena na zunanje, notranje športne objekte, opremo za športne aktivnosti in športno udejstvovanje
-(država, potrošnja)
+**2. TABELA** (csv)
+potrošnja v letu 2010 za športne aktivnosti, ločen na zunanje, notranje športne objekte, opremo za športne aktivnosti in športno udejstvovanje
+(država, področje, potrošnja)
 
-**3. TABELA**
-delež prebivalstva z resnejšimi boleznimi, v letu 2010, po izbranih državah
-(država, leto, vrednost)
+**3. TABELA** (csv)
+delež prebivalstva z resnejšimi boleznimi, v letih od 2007 do 2015, po izbranih državah
+(država, leto, starost, vrednost)
 
-**4. TABELA**
-delež potrošnje državljanov za zdravje in rekreacijo
-(država, leto, delež)
+**4. TABELA** (csv)
+delež potrošnje državljanov za zdravje in rekreacijo v letih od 2007 do 2015
+(država, leto, področje, delež)
 
-**5. TABELA**
+**5. TABELA** (html)
 delež premalo aktivnih državljanov po državah, za leto 2010
 (država, spol, število)
 
@@ -71,7 +71,7 @@ delež premalo aktivnih državljanov po državah, za leto 2010
 - prikaz podatkov aktivnosti državljanov in pričakovane življenjske starosti
 (država, spol, število, starost)
 
-- povezava med deležem potrošnje za športne aktivnosti in številom resneje obolelih državljanov v posamezni državi
+- povezava med deležem potrošnje za športne aktivnosti in številom resneje obolelih državljanov v posamezni državi (2007 - 2015)
 (država, potrošnja, leto, vrednost)
 
 ***
@@ -92,14 +92,14 @@ Pri vizualizaciji in analizi podatkov sem največ pozornosti posvetila povezavi 
 print(graf1)
 ```
 
-- V naslednjem grafu sem želela prikazati gibanje deleža obolelih državljanov, v letih od 2007 do 2015, za vsako državo posebej. V večini primerov delež obolelih narašča, najbolj pa to naraščanje izstopa pri Finski in Latviji. Zanimivo krivuljo nam pokažejo tudi podatki za Bolgarijo, ki kažejo na precejšnji obrat v deležu obolelih v roku zadnjih 10 let.
+- V naslednjem grafu sem želela prikazati gibanje deleža obolelih državljanov, v letih od 2007 do 2015, za vsako državo posebej. V večini primerov delež obolelih narašča, najbolj pa to naraščanje izstopa pri Finski in Latviji, kar je presenetljivo lede na premoženje, ki a Finci namenjajo športu. Zanimivo krivuljo nam pokažejo tudi podatki za Bolgarijo, ki kažejo na precejšnji obrat v deležu obolelih v roku zadnjih 10 let.
 
 ```{r graf2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Delež obolelih po državah'}
 print(graf2)
 
 ```
 
-- Tretji graf prikazuje gibanje skupne potrošnje vse držav v letih od 2007 do 2015, za dve področji: zdravje ter kulturo in šport. Potrošnja je izražena v odstotkih od celotne potrošnje državljanov. Iz grafov je dobro vidno, da skupna potrošnja (v deležu od celotne) za šport in kulturo upada, pri zdravju pa  je viden obraten trend - potrošnja rahlo narašča. 
+- Tretji graf prikazuje gibanje skupne potrošnje vse držav v letih od 2007 do 2015, za dve področji: zdravje ter kulturo in šport. Potrošnja je izražena v odstotkih od celotne potrošnje državljanov. Iz grafov je dobro vidno, da skupna potrošnja (v deležu od celotne) za šport in kulturo upada, pri zdravju pa  je viden obraten trend - potrošnja rahlo narašča. Upadanje potrošnje prve kategorije je lako tudi posledica vse manjšega zanimanja za kulturo, saj samega športa iz podatkov nisem mogla izluščiti. 
 
 ```{r graf3, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Povprečna deleža potrošnje izbranih držav za zdravje in šport'}
 print(graf3)
@@ -119,7 +119,7 @@ ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid,
   coord_cartesian(xlim = c(-25, 35), ylim = c(35, 70))
 ```
 
-- Drugi zemljevid vsebuje podatke o življenjski dobi državljanov nekaterih Evropskih držav, kjer se vidi, da najvišjo starost dočakajo Italijani, najnižjo pa Bolgari in Latvijci. rezultati so zelo zanimivi, saj ne moremo potegniti točnih smernic. Tako Italijani kot tudi Grki dočakajo ene najvišjih starosti, čeprav so si po aktivnosti povsem nasprotni.   
+- Drugi zemljevid vsebuje podatke o življenjski dobi državljanov nekaterih Evropskih držav, kjer se vidi, da najvišjo starost dočakajo Italijani, najnižjo pa Bolgari in Latvijci. Rezultati so zelo zanimivi, saj ne moremo potegniti točnih smernic. Tako Italijani kot tudi Grki dočakajo ene najvišjih starosti, čeprav so si po aktivnosti povsem nasprotni.   
 
 
 ```{r zemljevid2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid življenjske dobe državljanov'}
@@ -138,7 +138,7 @@ ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid,
 source("analiza/analiza.r", encoding = "UTF-8")
 ```
 
-V spodnjem grafu je prikazana napoved gibanja deleža obolelih Slovencev, glede na gibanje od leta 2007 dalje. Napoved je prikazana preko linearne regresije in prikazuje trend upadanja deleža bolnih v Sloveniji ter s tem tudi skladno napoved za prihodnost.
+V spodnjem grafu je prikazana napoved gibanja deleža obolelih Slovencev, glede na gibanje od leta 2007 dalje. Ta je prikazana preko linearne regresije in prikazuje trend upadanja deleža bolnih v Sloveniji ter s tem tudi skladno napoved za prihodnost.
 
 ```{r graf5, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Napoved gibanja deleža bolnih za Slovenijo'}
 print(graf5)
@@ -152,7 +152,7 @@ Zanimiva so opažanja o razlikah med povprečnimi življenjskimi dobami, v povez
 Poleg Italije je tu Finska, ki za športne aktivnosti zapravi daleč največ od vseh preučevanih držav, a se to ne opazi niti v stopnji aktivnosti, niti v številu resneje obolelih prebivalcev. 
 V skladu z mojimi pričakovanji pa kljub državam, ki od tega odstopajo, v splošnem večjo potrošnjo za šport spremlja manjši delež obolelih, kar je razvidno predvsem iz shiny aplikacije.
 
-Med moškim in ženskim spolom so opazne razlike v doseganju življenjske starosti (ženske živijo dlje) in hkrati v športni aktivnosti (moški se gibljejo več), a je pri obeh spolih viden trend: "bolj kot so v neki državi aktivni, nižja je povprečna življenjska doba", kar je zopet v nasprotju s pričakovanim. 
+Med moškim in ženskim spolom so opazne razlike v doseganju življenjske starosti (ženske živijo dlje) in hkrati v športni aktivnosti (moški se gibljejo več), a je pri obeh spolih viden trend: "bolj kot so v neki državi aktivni, nižja je povprečna življenjska doba", kar je zopet v nasprotju s pričakovanim. Sodobni način življenja je namreč podvržen delu in stresu, kar je lahko razlog za manjšo aktivnost, tehnoloija pa izboljšuje zmogljivosti zdravstvenega sistema, kar vodi v podaljševanje življenjske dobe. 
 
 ```{r shiny, echo=FALSE, message=FALSE, warning=FALSE}
 
