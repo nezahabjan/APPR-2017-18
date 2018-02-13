@@ -56,6 +56,7 @@ ociscenapotrosnjakupnamoc <- podatki %>% arrange(Drzava)
 
 totalociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Total"), ] 
 totalociscenapotrosnjakupnamoc$Podrocje <- NULL
+sportociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="")]
 
 ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
 ociscenapotrosnjakupnamoc$Podrocje <- gsub("Sports goods and services", "Sportne storitve", ociscenapotrosnjakupnamoc$Podrocje) 
@@ -201,7 +202,7 @@ nova4 <- inner_join(data, tabelastarosti)
 
 
 #Funkcija, ki zdruzi delez potrosnje drzavljanov za rekreacijo in stevilo resno obolelih
-nova3 <- inner_join(sportociscenapotrosnjakupnamoc, totalociscenihbolezni)
+nova3 <- inner_join(totalociscenapotrosnjakupnamoc, totalociscenihbolezni)
 
 
 
