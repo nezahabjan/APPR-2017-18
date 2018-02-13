@@ -71,9 +71,9 @@ graf2 <- ggplot(data=subset(totalociscenihbolezni, Drzava %in% c("Finland",
 
 
 #graf deleza potrosnje za zdravje in rekreacijo, po drzavah
-graf3 <- ggplot(data=ociscenadelezpotrosnje, aes(x=Leto, y=Delez/12, fill="pink")) + 
-  geom_bar(stat="identity", position="stack") + facet_grid(.~ Podrocje) +
-  labs(y="Povprecni delez potrosnje (v %)", fill="Barva",
+graf3 <- ggplot(data=ociscenadelezpotrosnje, aes(x=Leto, y=Delez/12)) + 
+  geom_bar(stat="identity", position="stack", fill="pink") + facet_grid(.~ Podrocje) +
+  labs(y="Povprecni delez potrosnje (v %)",
        title="Povprecna deleza potrosnje izbranih drzav za zdravje in sport") 
   
 
