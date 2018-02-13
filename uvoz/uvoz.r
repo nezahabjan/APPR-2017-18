@@ -56,7 +56,7 @@ ociscenapotrosnjakupnamoc <- podatki %>% arrange(Drzava)
 
 totalociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="Total"), ] 
 totalociscenapotrosnjakupnamoc$Podrocje <- NULL
-sportociscenapotrosnjakupnamoc <- ociscenapotrosnjakupnamoc[(ociscenapotrosnjakupnamoc$Podrocje=="")]
+
 
 ociscenapotrosnjakupnamoc$Podrocje <- gsub("Total", "Skupaj", ociscenapotrosnjakupnamoc$Podrocje) 
 ociscenapotrosnjakupnamoc$Podrocje <- gsub("Sports goods and services", "Sportne storitve", ociscenapotrosnjakupnamoc$Podrocje) 
