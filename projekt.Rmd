@@ -32,15 +32,16 @@ Preučila bom vpliv višine mesečnega dohodka (realno gledano po kupni moči) d
 
 source("uvoz/uvoz.r", encoding = "UTF-8")
 ```
-Podatki, s katerimi sem delala v tej fazi projekta, se nahajajo v petih tidydata tabelah:
+Podatki, s katerimi sem delala v tej fazi projekta, se nahajajo v petih tidydata tabelah.
 
 Spremenljivke:
--  leta
--  države
--  delež premalo aktivnega prebivalstva
--  življenjska doba
--  delež dohodka, ki ga posameznik nameni športnim aktivnostim
--  delež prebivalstva z daljšimi, resnejšimi boleznimi
+
+- Leta
+- Države
+- Delež premalo aktivnega prebivalstva
+- Življenjska doba
+- Delež dohodka, ki ga posameznik nameni športnim aktivnostim
+- Delež prebivalstva z daljšimi, resnejšimi boleznimi
 
 Tabele po vrsti prikazujejo:
 
