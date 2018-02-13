@@ -104,17 +104,10 @@ print(graf3)
 
 ```
 
-četrti graf je tortni diagram in prikazuje delež neaktivni državljanov v posamezni državi. Vidimo lako, da je največji delež neaktivni v Belgiji in Italiji, najmanjši pa v Grčiji. dobljeni rezultat je zanimiv, saj so v Grčiji torej najbolj aktivni in krati dočakajo eno najvišji starosti, Italijani pa s svojo tretinjsko neaktivnostjo dočakajo celo višjo starost od grkov. 
-
-```{r graf4, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Delež neaktivnih po državah'}
-print(graf4)
-
-```
-
 
 Sledita še dva zemljevida. 
 
-Prvi zemljevid je v sliki prikazan četrti graf. Nazorno se vidi, da so najbolj aktivni Grki, najmanj pa Italijani in Belgijci.
+Prvi zemljevid je v sliki prikazana aktivnost državljanov izbranih držav. Nazorno se vidi, da so najbolj aktivni Grki, najmanj pa Italijani in Belgijci.
 
 ```{r zemljevid1, echo=FALSE,warning=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid aktivnosti državljanov'}
 ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid, 

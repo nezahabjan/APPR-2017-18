@@ -1,11 +1,15 @@
 # 4. faza: Analiza podatkov
 
-podatki <- obcine %>% transmute(obcina, povrsina, gostota,
-                                gostota.naselij = naselja/povrsina) %>%
-  left_join(povprecja, by = "obcina")
-row.names(podatki) <- podatki$obcina
-podatki$obcina <- NULL
+#napoved stevila obolelih v Sloveniji, glede na preteklih 8 let
+ociscena <- subset(totalociscenihbolezni, Drzava == "Slovenia")
+fit <- lm(data = ociscena, Vrednost ~ Leto)
+a <- data.frame(Leto=seq(2007, 2015, 0.25))
+predict(fit, a)
+napoved <- a %>% mutate(Vrednost=predict(fit, .))
+graf5 <- ggplot(ociscena, aes(x=Leto, y=Vrednost)) +
+  geom_smooth(method=lm, se=FALSE) +
+  geom_point(data=napoved, aes(x=Leto, y=Vrednost), color="blue", size=3) +
+  labs(title="Napoved stevila obolelih za Slovenijo", y="Odstotek obolelih (v %)")
 
-# Število skupin
-n <- 5
-skupine <- hclust(dist(scale(podatki))) %>% cutree(n)
+
+
