@@ -48,19 +48,19 @@ tabele po vrsti prikazujejo:
 povprečno življenjsko dobo državljanov izbranih držav v letih od 2010 do 2015
 (država, spol, starost)
 
-2.TABELA
+2. TABELA
 delež potrošnje za športne aktivnosti, ločena na zunanje, notranje športne objekte, opremo za športne aktivnosti in športno udejstvovanje
 (država, potrošnja)
 
-3.TABELA
+3. TABELA
 delež prebivalstva z resnejšimi boleznimi, v letu 2010, po izbranih državah
 (država, leto, vrednost)
 
-4.TABELA
+4. TABELA
 delež potrošnje državljanov za zdravje in rekreacijo
 (država, leto, delež)
 
-5.TABELA
+5. TABELA
 delež premalo aktivnih državljanov po državah, za leto 2010
 (država, spol, število)
 
@@ -105,9 +105,9 @@ print(graf3)
 ```
 
 
-Sledita še dva zemljevida. 
+Sledita še dva zemljevida: 
 
-Prvi zemljevid je v sliki prikazana aktivnost državljanov izbranih držav. Nazorno se vidi, da so najbolj aktivni Grki, najmanj pa Italijani in Belgijci.
+- Prvi zemljevid je v sliki prikazana aktivnost državljanov izbranih držav. Nazorno se vidi, da so najbolj aktivni Grki, najmanj pa Italijani in Belgijci.
 
 ```{r zemljevid1, echo=FALSE,warning=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid aktivnosti državljanov'}
 ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid, 
@@ -117,7 +117,7 @@ ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid,
   coord_cartesian(xlim = c(-25, 35), ylim = c(35, 70))
 ```
 
-Drugi zemljevid vsebuje podatke o življenjski dobi državljanov nekaterih Evropskih držav, kjer se vidi, da najvišjo starost dočakajo Italijani, najnižjo pa Bolgari in Latvijci. rezultati so zelo zanimivi, saj ne moremo potegniti točnih smernic. Tako Italijani kot tudi Grki dočakajo ene najvišjih starosti, čeprav so si po aktivnosti povsem nasprotni.   
+- Drugi zemljevid vsebuje podatke o življenjski dobi državljanov nekaterih Evropskih držav, kjer se vidi, da najvišjo starost dočakajo Italijani, najnižjo pa Bolgari in Latvijci. rezultati so zelo zanimivi, saj ne moremo potegniti točnih smernic. Tako Italijani kot tudi Grki dočakajo ene najvišjih starosti, čeprav so si po aktivnosti povsem nasprotni.   
 
 
 ```{r zemljevid2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid življenjske dobe državljanov'}
@@ -136,12 +136,14 @@ ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid,
 source("analiza/analiza.r", encoding = "UTF-8")
 ```
 
-V spodnjem grafu je prikazana napoved gibanja deleža obolelih Slovencev, glede na gibanje od leta 2007 dalje. Napoved je prikazana preko linearne regresije in prikazuje trend upadanja deleža bolnih v Sloveniji.   
+V spodnjem grafu je prikazana napoved gibanja deleža obolelih Slovencev, glede na gibanje od leta 2007 dalje. Napoved je prikazana preko linearne regresije in prikazuje trend upadanja deleža bolnih v Sloveniji ter s tem tudi skladno napoved za prihodnost.
 
 ```{r graf5, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Napoved gibanja deleža bolnih za Slovenijo'}
 print(graf5)
 
 ```
+
+
 
 ```{r shiny, echo=FALSE, message=FALSE, warning=FALSE}
 
