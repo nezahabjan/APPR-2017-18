@@ -88,20 +88,20 @@ Pri vizualizaciji in analizi podatkov sem največ pozornosti posvetila povezavi 
 
 - Prvi graf prikazuje višino potrošnje za posamezno športno področje, za vsako državo posebej. Vidimo lahko, da izbrane države največ denarja namenjajo rekreacijskim storitvam in pa gradnji in vzdrževanju tako notranjih kot tudi zunanjih športnih objektov. Zelo malo državljani zapravijo predvsem za športne pripomočke in opremo. Država, ki v splošnem zapravi za šport največ je Finska, najmanjši pomen pa temu daje Bolgarija. 
 
-```{r graf1, echo=FALSE,warning=FALSE, message=FALSE, fig.align='center', fig.cap='Potrošnja za posamezna športna področja'}
+```{r graf1, echo=FALSE,warning=FALSE, message=FALSE, fig.align='center' }
 print(graf1)
 ```
 
 - V naslednjem grafu sem želela prikazati gibanje deleža obolelih državljanov, v letih od 2007 do 2015, za vsako državo posebej. V večini primerov delež obolelih narašča, najbolj pa to naraščanje izstopa pri Finski in Latviji, kar je presenetljivo lede na premoženje, ki a Finci namenjajo športu. Zanimivo krivuljo nam pokažejo tudi podatki za Bolgarijo, ki kažejo na precejšnji obrat v deležu obolelih v roku zadnjih 10 let.
 
-```{r graf2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Delež obolelih po državah'}
+```{r graf2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
 print(graf2)
 
 ```
 
 - Tretji graf prikazuje gibanje skupne potrošnje vse držav v letih od 2007 do 2015, za dve področji: zdravje ter kulturo in šport. Potrošnja je izražena v odstotkih od celotne potrošnje državljanov. Iz grafov je dobro vidno, da skupna potrošnja (v deležu od celotne) za šport in kulturo upada, pri zdravju pa  je viden obraten trend - potrošnja rahlo narašča. Upadanje potrošnje prve kategorije je lako tudi posledica vse manjšega zanimanja za kulturo, saj samega športa iz podatkov nisem mogla izluščiti. 
 
-```{r graf3, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Povprečna deleža potrošnje izbranih držav za zdravje in šport'}
+```{r graf3, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
 print(graf3)
 
 ```
@@ -111,7 +111,7 @@ Sledita še dva zemljevida:
 
 - Prvi zemljevid je v sliki prikazana aktivnost državljanov izbranih držav. Nazorno se vidi, da so najbolj aktivni Grki, najmanj pa Italijani in Belgijci.
 
-```{r zemljevid1, echo=FALSE,warning=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid aktivnosti državljanov'}
+```{r zemljevid1, echo=FALSE,warning=FALSE, message=FALSE, fig.align='center'}
 ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid, 
                                          by=c("NAME_LONG"="Drzava")), 
                         aes(x=long, y=lat, group = group, fill = Stevilo)) + 
@@ -122,7 +122,7 @@ ggplot() + geom_polygon(data = left_join(zemljevid, datazemljevid,
 - Drugi zemljevid vsebuje podatke o življenjski dobi državljanov nekaterih Evropskih držav, kjer se vidi, da najvišjo starost dočakajo Italijani, najnižjo pa Bolgari in Latvijci. Rezultati so zelo zanimivi, saj ne moremo potegniti točnih smernic. Tako Italijani kot tudi Grki dočakajo ene najvišjih starosti, čeprav so si po aktivnosti povsem nasprotni.   
 
 
-```{r zemljevid2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Zemljevid življenjske dobe državljanov'}
+```{r zemljevid2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
 ggplot() + geom_polygon(data = left_join(zemljevid, tabelastarostizemljevid, 
                                          by=c("NAME_LONG"="Drzava")), 
                         aes(x=long, y=lat, group = group, fill = Starost)) + 
