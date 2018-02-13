@@ -35,42 +35,42 @@ source("uvoz/uvoz.r", encoding = "UTF-8")
 Podatki, s katerimi sem delala v tej fazi projekta, se nahajajo v petih tidydata tabelah:
 
 Spremenljivke:
-- leta
-- države
-- delež premalo aktivnega prebivalstva
-- življenjska doba
-- delež dohodka, ki ga posameznik nameni športnim aktivnostim
-- delež prebivalstva z daljšimi, resnejšimi boleznimi
+-  leta
+-  države
+-  delež premalo aktivnega prebivalstva
+-  življenjska doba
+-  delež dohodka, ki ga posameznik nameni športnim aktivnostim
+-  delež prebivalstva z daljšimi, resnejšimi boleznimi
 
-tabele po vrsti prikazujejo:
+Tabele po vrsti prikazujejo:
 
-1. TABELA
+**1. TABELA**
 povprečno življenjsko dobo državljanov izbranih držav v letih od 2010 do 2015
 (država, spol, starost)
 
-2. TABELA
+**2. TABELA**
 delež potrošnje za športne aktivnosti, ločena na zunanje, notranje športne objekte, opremo za športne aktivnosti in športno udejstvovanje
 (država, potrošnja)
 
-3. TABELA
+**3. TABELA**
 delež prebivalstva z resnejšimi boleznimi, v letu 2010, po izbranih državah
 (država, leto, vrednost)
 
-4. TABELA
+**4. TABELA**
 delež potrošnje državljanov za zdravje in rekreacijo
 (država, leto, delež)
 
-5. TABELA
+**5. TABELA**
 delež premalo aktivnih državljanov po državah, za leto 2010
 (država, spol, število)
 
 
-ZDRUŽENI TABELI:
+**ZDRUŽENI TABELI:**
 
--prikaz podatkov aktivnosti državljanov in pričakovane življenjske starosti
+- prikaz podatkov aktivnosti državljanov in pričakovane življenjske starosti
 (država, spol, število, starost)
 
--povezava med deležem potrošnje za športne aktivnosti in številom resneje obolelih državljanov v posamezni državi
+- povezava med deležem potrošnje za športne aktivnosti in številom resneje obolelih državljanov v posamezni državi
 (država, potrošnja, leto, vrednost)
 
 ***
@@ -83,21 +83,22 @@ ZDRUŽENI TABELI:
 
 source("vizualizacija/vizualizacija.r", encoding = "UTF-8")
 ```
+Pri vizualizaciji in analizi podatkov sem največ pozornosti posvetila povezavi med številom bolezni in pa potrošnjo za šport in ukvarjanjem s športom v posamezni državi. Glavne smernice sem zajela v treh grafih:
 
-Prvi graf prikazuje višino potrošnje za posamezno športno področje, za vsako državo posebej. Vidimo lahko, da izbrane države največ denarja namenjajo rekreacijskim storitvam in pa gradnji in vzdrževanju tako notranjih kot tudi zunanjih športnih objektov. Zelo malo državljani zapravijo predvsem za športne pripomočke in opremo. Država, ki v splošnem zapravi za šport največ je Finska, najmanjši pomen pa temu daje Bolgarija. 
+- Prvi graf prikazuje višino potrošnje za posamezno športno področje, za vsako državo posebej. Vidimo lahko, da izbrane države največ denarja namenjajo rekreacijskim storitvam in pa gradnji in vzdrževanju tako notranjih kot tudi zunanjih športnih objektov. Zelo malo državljani zapravijo predvsem za športne pripomočke in opremo. Država, ki v splošnem zapravi za šport največ je Finska, najmanjši pomen pa temu daje Bolgarija. 
 
 ```{r graf1, echo=FALSE,warning=FALSE, message=FALSE, fig.align='center', fig.cap='Potrošnja za posamezna športna področja'}
 print(graf1)
 ```
 
-V naslednjem grafu sem želela prikazati gibanje deleža obolelih državljanov, v letih od 2007 do 2015, za vsako državo posebej. V večini primerov delež obolelih narašča, najbolj pa to naraščanje izstopa pri Finski in Latviji. Zanimivo krivuljo nam pokažejo tudi podatki za Bolgarijo, ki kažejo na precejšnji obrat v deležu obolelih v roku zadnjih 10 let.
+- V naslednjem grafu sem želela prikazati gibanje deleža obolelih državljanov, v letih od 2007 do 2015, za vsako državo posebej. V večini primerov delež obolelih narašča, najbolj pa to naraščanje izstopa pri Finski in Latviji. Zanimivo krivuljo nam pokažejo tudi podatki za Bolgarijo, ki kažejo na precejšnji obrat v deležu obolelih v roku zadnjih 10 let.
 
 ```{r graf2, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Delež obolelih po državah'}
 print(graf2)
 
 ```
 
-Tretji graf prikazuje gibanje skupne potrošnje vse držav v letih od 2007 do 2015, za dve področji: zdravje ter kulturo in šport. Potrošnja je izražena v odstotkih od celotne potrošnje državljanov. Iz grafov je dobro vidno, da skupna potrošnja (v deležu od celotne) za šport in kulturo upada, pri zdravju pa  je viden obraten trend - potrošnja rahlo narašča. 
+- Tretji graf prikazuje gibanje skupne potrošnje vse držav v letih od 2007 do 2015, za dve področji: zdravje ter kulturo in šport. Potrošnja je izražena v odstotkih od celotne potrošnje državljanov. Iz grafov je dobro vidno, da skupna potrošnja (v deležu od celotne) za šport in kulturo upada, pri zdravju pa  je viden obraten trend - potrošnja rahlo narašča. 
 
 ```{r graf3, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.cap='Povprečna deleža potrošnje izbranih držav za zdravje in šport'}
 print(graf3)
@@ -143,7 +144,14 @@ print(graf5)
 
 ```
 
+**ZAKLJUČKI IN UGOTOVITVE:**
 
+Pri analizi podatkov sem prišla do nekaterih ugotovitev, ki se skladajo z mojimi pričakovanji, ter do drugih, ki so jim ravno nasprotne.
+Zanimiva so opažanja o razlikah med povprečnimi življenjskimi dobami, v povezavi z aktivnostjo državljanov. Kot že omenjeno, se Italijani gibljejo najmanj, dosegajo pa najvišje starosti. To je torej lahko tudi posledica načina življenja, če se usmerimo na področja, ki se ne navezujejo na šport. Način prehranjevanja in nasploh življenjski ritem ter razvitost zdravstvenega sistema namreč tudi bistveno pripomorejo k podaljševanju življenjske dobe.
+Poleg Italije je tu Finska, ki za športne aktivnosti zapravi daleč največ od vseh preučevanih držav, a se to ne opazi niti v stopnji aktivnosti, niti v številu resneje obolelih prebivalcev. 
+V skladu z mojimi pričakovanji pa kljub državam, ki od tega odstopajo, v splošnem večjo potrošnjo za šport spremlja manjši delež obolelih, kar je razvidno predvsem iz shiny aplikacije.
+
+Med moškim in ženskim spolom so opazne razlike v doseganju življenjske starosti (ženske živijo dlje) in hkrati v športni aktivnosti (moški se gibljejo več), a je pri obeh spolih viden trend: "bolj kot so v neki državi aktivni, nižja je povprečna življenjska doba", kar je zopet v nasprotju s pričakovanim. 
 
 ```{r shiny, echo=FALSE, message=FALSE, warning=FALSE}
 
