@@ -15,23 +15,49 @@ Viri tabel:
 - http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_mlexpecedu&lang=en
 - https://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy#List_by_the_United_Nations,_for_2010%E2%80%932015
 
-spremenljivke:
-- leta
-- države
-- delež premalo aktivnega prebivalstva
-- življenjska doba
-- delež potrošnje za različna športna področja
-- delež prebivalstva z daljšimi, resnejšimi boleznimi
+Podatki, s katerimi sem delala, se nahajajo v petih tidydata tabelah.
 
-tabele po vrsti prikazujejo:
-- povprečno življenjsko dobo državljanov izbranih držav v letih od 2010 do 2015
-- delež potrošnje za športne aktivnosti, ločena na zunanje, notranje športne objekte, opremo za športne aktivnosti in športno udejstvovanje
-- delež prebivalstva z resnejšimi boleznimi, v letu 2010, po izbranih državah
-- delež potrošnje državljanov za zdravje in rekreacijo
-- delež premalo aktivnih državljanov po državah, za leto 2010
+Spremenljivke:
 
-Prva združena tabela vsebuje prikaz podatkov aktivnosti državljanov in pričakovane življenjske starosti.
-Druga združena tabela predstavlja povezavo med deležem potrošnje za športne aktivnosti in številom resneje obolelih državljanov v posamezni državi.
+- Leta
+- Države
+- Delež premalo aktivnega prebivalstva
+- Življenjska doba
+- Delež potrošnje namenjene športnim aktivnostim
+- Delež prebivalstva z daljšimi, resnejšimi boleznimi
+
+Tabele po vrsti prikazujejo:
+
+**1. TABELA** (html)
+povprečno življenjsko dobo državljanov izbranih držav v letih od 2010 do 2015
+(država, spol, starost)
+
+**2. TABELA** (csv)
+potrošnja v letu 2010 za športne aktivnosti, ločen na zunanje, notranje športne objekte, opremo za športne aktivnosti in športno udejstvovanje
+(država, področje, potrošnja)
+
+**3. TABELA** (csv)
+delež prebivalstva z resnejšimi boleznimi, v letih od 2007 do 2015, po izbranih državah
+(država, leto, starost, vrednost)
+
+**4. TABELA** (csv)
+delež potrošnje državljanov za zdravje in rekreacijo v letih od 2007 do 2015
+(država, leto, področje, delež)
+
+**5. TABELA** (html)
+delež premalo aktivnih državljanov po državah, za leto 2010
+(država, spol, število)
+
+
+**ZDRUŽENI TABELI:**
+
+- prikaz podatkov aktivnosti državljanov in pričakovane življenjske starosti
+(država, spol, število, starost)
+
+- povezava med deležem potrošnje za športne aktivnosti in številom resneje obolelih državljanov v posamezni državi (2007 - 2015)
+(država, potrošnja, leto, vrednost)
+
+
 
 ## Program
 
